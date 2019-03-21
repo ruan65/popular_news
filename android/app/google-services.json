@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "59937583046",
+    "firebase_url": "https://clearapi-a0281.firebaseio.com",
+    "project_id": "clearapi-a0281",
+    "storage_bucket": "clearapi-a0281.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59937583046:android:87a8605617771bf4",
+        "android_client_info": {
+          "package_name": "com.renesanse.cleannewsai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59937583046-gikrdt8tbnf0lb82hln5pmv97h26gaue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMBJWRc03oDnf7CbAPgZkTZ5E8ChqZ57U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
