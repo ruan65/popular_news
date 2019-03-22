@@ -14,15 +14,17 @@ class SettingsScreenMutator {
   }
 
   addTheme(theme) async {
-    final themes = (await _prefs).getStringList("themes");
+    final List themes = (await _prefs).getStringList("themes");
     themes.add(theme);
+    themes.sort();
     state.broadcaster.add(themes);
     (await _prefs).setStringList("themes", themes);
   }
 
   deleteTheme(theme) async {
-    final themes = (await _prefs).getStringList("themes");
+    final List themes = (await _prefs).getStringList("themes");
     themes.remove(theme);
+    themes.sort();
     state.broadcaster.add(themes);
     (await _prefs).setStringList("themes", themes);
   }

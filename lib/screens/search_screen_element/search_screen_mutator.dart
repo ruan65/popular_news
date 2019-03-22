@@ -7,7 +7,6 @@ class SearchScreenMutator extends AbstractMutator {
   SearchScreenMutator(state) : super(state);
 
   getNews() async {
-    state.broadcaster.add(null);
     state.cashedData = await provider.getNews(true, null);
     state.broadcaster.add(state.cashedData);
   }

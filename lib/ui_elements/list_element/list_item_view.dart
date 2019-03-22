@@ -17,9 +17,12 @@ class ListItemView extends StatefulWidget {
   final publishedAt;
   final urlToImage;
   final state;
+  bool rebuild = false;
 
   ListItemView(this.name, this.url, this.title, this.publishedAt,
-      this.urlToImage, this.state);
+      this.urlToImage, this.state) {
+    rebuild = true;
+  }
 
   createState() => ListItemViewState();
 }
@@ -33,16 +36,24 @@ class ListItemViewState extends State<ListItemView>
     super.initState();
     controller = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
-    animation = Tween(begin: 1.0, end: 0.33).animate(controller);
+    animation = Tween(begin: 1.0, end: 0.5).animate(controller);
   }
 
   build(context) {
+    if (widget.rebuild) {
+      controller = AnimationController(
+          duration: const Duration(milliseconds: 200), vsync: this);
+      animation = Tween(begin: 1.0, end: 0.5).animate(controller);
+      widget.rebuild = false;
+    }
+
     final image = CachedNetworkImageProvider(widget.urlToImage);
     image
         .resolve(ImageConfiguration())
         .addListener((imageInfo, synchronousCall) {
-      controller.forward();
+      if (mounted) controller.forward();
     });
+
     return AnimatedBuilder(
         animation: animation,
         builder: (context, _) {
@@ -90,7 +101,7 @@ class ListItemViewState extends State<ListItemView>
                                     widget.state.liked
                                         ? CupertinoIcons.bookmark_solid
                                         : CupertinoIcons.bookmark,
-                                    color: CupertinoColors.activeGreen),
+                                    color: CupertinoColors.activeOrange),
                                 onPressed: () async {
                                   widget.state.liked
                                       ? provider.deleteMyArticle(widget.url)

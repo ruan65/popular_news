@@ -44,7 +44,7 @@ class SettingsScreenView extends StatelessWidget {
                         ? settingsItems.map((theme) {
                             return ActionChip(
                               padding: EdgeInsets.all(8.0),
-                              shadowColor: CupertinoColors.activeGreen,
+                              shadowColor: CupertinoColors.activeOrange,
                               onPressed: () async {
                                 final themes =
                                     await mutator.getSelectedThemes();
@@ -58,7 +58,7 @@ class SettingsScreenView extends StatelessWidget {
                               },
                               backgroundColor:
                                   snapshot.data.contains(theme.toLowerCase())
-                                      ? CupertinoColors.activeGreen
+                                      ? CupertinoColors.activeOrange
                                       : CupertinoColors.inactiveGray,
                               label: Text(theme),
                               labelStyle: TextStyle(fontSize: 20),
@@ -81,8 +81,8 @@ class SettingsScreenView extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 18.0),
             child: ActionChip(
               padding: EdgeInsets.all(8.0),
-              backgroundColor: CupertinoColors.activeGreen,
-              shadowColor: CupertinoColors.activeGreen,
+              backgroundColor: CupertinoColors.activeOrange,
+              shadowColor: CupertinoColors.activeOrange,
               label: Text("Change theme"),
               labelStyle: TextStyle(fontSize: 20),
               onPressed: () async {

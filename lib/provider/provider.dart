@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
-
+import 'package:flutter/services.dart';
 import 'package:clean_news_ai/models/Item_model.dart';
 import 'package:clean_news_ai/provider/keys.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+
 
 class NewsApiProvider {
   final _prefs = SharedPreferences.getInstance();
@@ -17,21 +17,20 @@ class NewsApiProvider {
     var response;
     final _apiKey = apikeys[Random().nextInt(4)];
     final lastRequest = (await _prefs).getString('lastRequest');
-    var lang = (await _prefs).getString('lang') ?? "en";
     final mapArticles = {};
+
+    final platform = const MethodChannel('samples.flutter.io/battery');
+    var lang = await platform.invokeMethod('lang');
 
     if (search) {
       response = await get(
-          "https://newsapi.org/v2/everything?q=$lastRequest&sortBy=relevance&language=$lang&apiKey=$_apiKey");
+          "https://newsapi.org/v2/everything?q=$lastRequest&pageSize=1&sortBy=relevance&language=$lang&apiKey=$_apiKey");
     } else {
       lang == "en" ? lang = "us" : (await _prefs).getString('lang');
-      theme != "mixed"
-          ? response = await get(
-              "https://newsapi.org/v2/top-headlines?country=$lang&category=$theme&apiKey=$_apiKey")
-          : response = await get(
-              "https://newsapi.org/v2/top-headlines?country=$lang&apiKey=$_apiKey");
+      response = await get(
+              "https://newsapi.org/v2/top-headlines?country=$lang&category=$theme&pageSize=1&apiKey=$_apiKey");
     }
-
+    
     if (response.statusCode != 200) return getNews(search, theme);
 
     final articles = ItemModel.fromJson(json.decode(response.body)).articles;
@@ -87,9 +86,6 @@ class NewsApiProvider {
   }
 
   _saveMyID() async {
-    const platform = const MethodChannel('samples.flutter.io/battery');
-    final lang = await platform.invokeMethod('lang');
-    (await _prefs).setString("lang", lang);
     final myid = Uuid().v4();
     await _fireStore.collection("users").document(myid).get();
     (await _prefs).setString('id', myid);
@@ -100,7 +96,7 @@ class NewsApiProvider {
     var newVersionDoc =
         await _fireStore.collection("appInfo").document("flutterNews").get();
     int newVersion = newVersionDoc.data.values.toList()[0];
-    return newVersion > 3;
+    return newVersion > 5;
   }
 }
 

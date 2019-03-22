@@ -1,6 +1,6 @@
-
 import 'package:clean_news_ai/ui_elements/empty_box.dart';
-import 'package:clean_news_ai/ui_elements/list.dart';
+import 'package:clean_news_ai/ui_elements/list_element/list_item_view.dart';
+import 'package:clean_news_ai/ui_elements/list_element/list_item_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clean_news_ai/ui_elements/search_bar_element/search_widget.dart';
@@ -38,7 +38,18 @@ abstract class AbstractScreenView extends StatelessWidget {
                 stream: state.news,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return ListWidget(snapshot.data.values.toList());
+                    final news = snapshot.data.values.toList();
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        return ListItemView(
+                            news[index].source["name"],
+                            news[index].url,
+                            news[index].title,
+                            news[index].publishedAt,
+                            news[index].urlToImage,
+                            ListItemState(news[index].liked));
+                      }, childCount: snapshot.data.values.length),
+                    );
                   } else {
                     return const SliverToBoxAdapter();
                   }
