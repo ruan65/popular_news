@@ -10,6 +10,7 @@ import 'screens/settings_screen_element/settings_screen_view.dart';
 import 'package:clean_news_ai/provider/provider.dart';
 
 class RootElement extends StatelessWidget {
+    
   build(context) {
     _showUpdateDialog(context);
     return CupertinoTabScaffold(

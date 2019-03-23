@@ -6,9 +6,9 @@ class FavoritesScreenMutator extends AbstractMutator {
   FavoritesScreenMutator(state) : super(state);
 
   getNews() async {
-    state.cashedData = await provider.getSavedNews();
-    state.broadcaster.add(state.cashedData);
+    state.cashedArticles = {};
+    state.broadcaster.add(await provider.getSavedNews());
   }
 }
 
-final favoritesMutator = FavoritesScreenMutator(state);
+final FavoritesScreenMutator favoritesMutator = FavoritesScreenMutator(favoritesScreenState);

@@ -11,7 +11,6 @@ class ItemModel {
     }
     _articles = temp;
   }
-
   List<Article> get articles => _articles;
 }
 
@@ -34,7 +33,7 @@ class Article {
     _url = article["url"];
     _urlToImage = article["urlToImage"];
     DateFormat format = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    final unformedDate = format.parse(article["publishedAt"]);
+    DateTime unformedDate = format.parse(article["publishedAt"]);
     _publishedAt =
         "${unformedDate.day} ${months[unformedDate.month - 1]} ${unformedDate.year}";
     _content = article["content"];

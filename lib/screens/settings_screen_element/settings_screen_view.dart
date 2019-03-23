@@ -3,7 +3,7 @@ import 'package:clean_news_ai/screens/main_screen_element/main_screen_mutator.da
 import 'package:clean_news_ai/ui_elements/empty_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:clean_news_ai/provider/provider.dart';
 import 'package:clean_news_ai/screens/main_screen_element/main_screen_view.dart';
 import 'settings_screen_mutator.dart';
 import 'settings_screen_state.dart';
@@ -12,8 +12,6 @@ class SettingsScreenView extends StatelessWidget {
   SettingsScreenView() {
     mutator.getSelectedThemes();
   }
-
-  final prefs = SharedPreferences.getInstance();
 
   final settingsItems = [
     "Business",
@@ -50,9 +48,9 @@ class SettingsScreenView extends StatelessWidget {
                                     await mutator.getSelectedThemes();
                                 themes.contains(theme.toLowerCase())
                                     ? await mutator
-                                        .deleteTheme(theme.toLowerCase())
+                                        .changeThemes(isRemove: true, theme: theme.toLowerCase())
                                     : await mutator
-                                        .addTheme(theme.toLowerCase());
+                                        .changeThemes(isRemove: false, theme: theme.toLowerCase());
                                 mainMutator.getNews();
                                 mainScreenView.scrollToTop();
                               },
@@ -86,7 +84,7 @@ class SettingsScreenView extends StatelessWidget {
               label: Text("Change theme"),
               labelStyle: TextStyle(fontSize: 20),
               onPressed: () async {
-                (await prefs).setBool("t", !lightTheme);
+                (await provider.prefs).setBool("t", !lightTheme);
                 newsAppState.setState(() {
                   lightTheme = !lightTheme;
                 });

@@ -1,8 +1,11 @@
 import 'dart:async';
 
 abstract class AbstractState {
-  Map cashedData = {};
+  Map cashedArticles = {};
   final broadcaster = StreamController.broadcast();
   get news => broadcaster.stream;
 
+  close(){
+    broadcaster.close();
+  }
 }

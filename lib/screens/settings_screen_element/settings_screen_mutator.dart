@@ -1,32 +1,25 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:clean_news_ai/provider/provider.dart';
 import 'settings_screen_state.dart';
 
 class SettingsScreenMutator {
   final SettingsScreenState state;
-  final _prefs = SharedPreferences.getInstance();
   SettingsScreenMutator(this.state);
 
   getSelectedThemes() async {
-    final themes = (await _prefs).getStringList("themes");
-    if(themes == null) (await _prefs).setStringList("themes", []);
-    state.broadcaster.add(themes);
-    return themes;
+    final themes = (await provider.prefs).getStringList("themes");
+    if(themes == null) (await provider.prefs).setStringList("themes", []);
+    state.broadcaster.add(themes ?? []);
+    return themes ?? [];
   }
 
-  addTheme(theme) async {
-    final List themes = (await _prefs).getStringList("themes");
-    themes.add(theme);
+  changeThemes({bool isRemove, String theme})async {
+    final List themes = (await provider.prefs).getStringList("themes");
+    if(themes == null) (await provider.prefs).setStringList("themes", []);
+    isRemove ? themes.remove(theme) : themes.add(theme);
     themes.sort();
-    state.broadcaster.add(themes);
-    (await _prefs).setStringList("themes", themes);
-  }
-
-  deleteTheme(theme) async {
-    final List themes = (await _prefs).getStringList("themes");
-    themes.remove(theme);
-    themes.sort();
-    state.broadcaster.add(themes);
-    (await _prefs).setStringList("themes", themes);
+    state.broadcaster.add(themes ?? []);
+    (await provider.prefs).setStringList("themes", themes);
   }
 
 }

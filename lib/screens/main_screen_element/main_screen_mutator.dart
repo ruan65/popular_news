@@ -5,4 +5,4 @@ class MainScreenMutator extends AbstractMutator {
   MainScreenMutator(state) : super(state);
 }
 
-final mainMutator = MainScreenMutator(state);
+final mainMutator = MainScreenMutator(mainScreenState);

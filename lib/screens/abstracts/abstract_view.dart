@@ -1,20 +1,20 @@
+import 'package:clean_news_ai/screens/abstracts/abstract_mutator.dart';
 import 'package:clean_news_ai/ui_elements/empty_box.dart';
 import 'package:clean_news_ai/ui_elements/list_element/list_item_view.dart';
-import 'package:clean_news_ai/ui_elements/list_element/list_item_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clean_news_ai/ui_elements/search_bar_element/search_widget.dart';
 import 'abstract_state.dart';
 
 abstract class AbstractScreenView extends StatelessWidget {
-  final mutator;
+  final AbstractMutator mutator;
   final AbstractState state;
-  final title;
-  final isSearchScreen;
+  final String title;
+  final bool isSearchScreen;
   final ScrollController scrollController = ScrollController();
 
   AbstractScreenView(
-      this.mutator, this.title, this.state, this.isSearchScreen) {
+      {this.mutator, this.title, this.state, this.isSearchScreen}) {
     mutator.getNews();
   }
 
@@ -38,17 +38,20 @@ abstract class AbstractScreenView extends StatelessWidget {
                 stream: state.news,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    final news = snapshot.data.values.toList();
+                    final news = snapshot.data.values.map((element) {
+                          return ListItemView(
+                            element.source["name"],
+                            element.url,
+                            element.title,
+                            element.publishedAt,
+                            element.urlToImage,
+                            element.liked,
+                          );
+                        }).toList();
                     return SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                        return ListItemView(
-                            news[index].source["name"],
-                            news[index].url,
-                            news[index].title,
-                            news[index].publishedAt,
-                            news[index].urlToImage,
-                            ListItemState(news[index].liked));
-                      }, childCount: snapshot.data.values.length),
+                        return news[index];
+                      }, childCount: snapshot.data.length),
                     );
                   } else {
                     return const SliverToBoxAdapter();
