@@ -8,10 +8,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:sqflite/sqflite.dart';
 
 class NewsApiProvider {
   final prefs = SharedPreferences.getInstance();
-  final _fireStore = Firestore.instance;
+  final _fireStore = Firestore.instance..enablePersistence(true);
   final platform = const MethodChannel('samples.flutter.io/battery');
 
   Map<String, Article> mapArticles = {};
@@ -22,7 +23,7 @@ class NewsApiProvider {
   Future<Map<String, Article>> getNews({bool search, String theme}) async {
     final _apiKey = apikeys[Random().nextInt(4)];
     final lastRequest = (await prefs).getString('lastRequest') ??
-        "§12138172827816372163761263126";
+        "12138172827816372163761263126";
     var lang = await platform.invokeMethod('lang');
 
     Response response;
@@ -42,11 +43,11 @@ class NewsApiProvider {
         ItemModel.fromJson(json.decode(response.body)).articles;
 
     mapArticles = {};
+    savedArticles = savedArticles ?? await getSavedNews();
     articles.forEach((article) {
+      if (savedArticles.containsKey(article.url)) article.liked = true;
       mapArticles[article.url] = article;
     });
-
-    savedArticles = savedArticles ?? await getSavedNews();
 
     return mapArticles;
   }
@@ -59,8 +60,7 @@ class NewsApiProvider {
     if (articles.data != null)
       articles.data.values.toList().forEach((value) {
         Article article = Article.fromMap(value);
-        savedArticles[article.url] = article;
-        savedArticles[article.url].liked = true;
+        savedArticles[article.url] = article..liked = true;
       });
     return savedArticles;
   }
@@ -97,8 +97,42 @@ class NewsApiProvider {
     var newVersionDoc =
         await _fireStore.collection("appInfo").document("flutterNews").get();
     int newVersion = newVersionDoc.data.values.toList()[0];
-    return newVersion > 7;
+    return newVersion > 9;
   }
+
+  // saveNewsInDatabase({String theme, Article article}) async {
+  //   ///
+  // Article.fromMap(map) {
+  //   _source = {"name": map["name"]};
+  //   _author = "nothing";
+  //   _title = map["title"];
+  //   _description = "nothing";
+  //   _url = map["url"];
+  //   _urlToImage = map["urlToImage"];
+  //   _publishedAt = map["publishedAt"];
+  //   _content = map["content"];
+  // };
+  // ///
+
+  //   final databasesPath = await getDatabasesPath();
+  //   final path = "$databasesPath$theme.db";
+  //   Database database = await openDatabase(path, version: 1,
+  //       onCreate: (Database db, int version) async {
+  //     await db.execute(
+  //         'CREATE TABLE $theme (id INTEGER PRIMARY KEY, name TEXT, title TEXT, url TEXT, urlToImage TEXT, publishedAt TEXT, content TEXT)');
+  //   });
+
+  //   ///todo
+  //   await database.transaction((txn) async {
+  //     int id1 = await txn.rawInsert(
+  //         'INSERT INTO Test(name, value, num) VALUES("some name", 1234, 456.789)');
+  //     print('inserted1: $id1');
+  //     int id2 = await txn.rawInsert(
+  //         'INSERT INTO Test(name, value, num) VALUES(?, ?, ?)',
+  //         ['another name', 12345678, 3.1416]);
+  //     print('inserted2: $id2');
+  //   });
+  // }
 }
 
 final provider = NewsApiProvider();

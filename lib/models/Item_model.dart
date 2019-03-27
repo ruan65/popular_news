@@ -41,13 +41,10 @@ class Article {
 
   Article.fromMap(map) {
     _source = {"name": map["name"]};
-    _author = "nothing";
     _title = map["title"];
-    _description = "nothing";
     _url = map["url"];
     _urlToImage = map["urlToImage"];
     _publishedAt = map["publishedAt"];
-    _content = map["content"];
   }
 
   get source => _source;

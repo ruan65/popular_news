@@ -40,12 +40,13 @@ abstract class AbstractScreenView extends StatelessWidget {
                   if (snapshot.hasData) {
                     final news = snapshot.data.values.map((element) {
                           return ListItemView(
-                            element.source["name"],
-                            element.url,
-                            element.title,
-                            element.publishedAt,
-                            element.urlToImage,
-                            element.liked,
+                            key : ValueKey(element.url),
+                            name : element.source["name"],
+                            url : element.url,
+                            title : element.title,
+                            publishedAt : element.publishedAt,
+                            urlToImage : element.urlToImage,
+                            liked : element.liked,
                           );
                         }).toList();
                     return SliverList(
