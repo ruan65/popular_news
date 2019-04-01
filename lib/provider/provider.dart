@@ -12,8 +12,7 @@ import 'package:sqflite/sqflite.dart';
 
 class NewsApiProvider {
   final prefs = SharedPreferences.getInstance();
-  ///..enablePersistence(true)
-  final _fireStore = Firestore.instance;
+  final _fireStore = Firestore.instance.enablePersistence(true);
   final platform = const MethodChannel('samples.flutter.io/battery');
 
   Map<String, Article> mapArticles = {};
@@ -22,7 +21,7 @@ class NewsApiProvider {
   var uid;
 
   Future<Map<String, Article>> getNews({bool search, String theme}) async {
-    final _apiKey = apikeys[Random().nextInt(4)];
+    //final _apiKey = apikeys[Random().nextInt(4)];
     final lastRequest = (await prefs).getString('lastRequest') ??
         "12138172827816372163761263126";
     var lang = await platform.invokeMethod('lang');
