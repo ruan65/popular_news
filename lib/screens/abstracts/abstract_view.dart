@@ -13,55 +13,57 @@ abstract class AbstractScreenView extends StatelessWidget {
   final bool isSearchScreen;
   final ScrollController scrollController = ScrollController();
 
-  AbstractScreenView(
-      {this.mutator, this.title, this.state, this.isSearchScreen}) {
+  AbstractScreenView({Key key, this.mutator, this.state, this.title, this.isSearchScreen}) : super(key: key){
     mutator.getNews();
   }
-
   build(context) {
-    return CupertinoTabView(
-      builder: (context) {
-        return CustomScrollView(
-          controller: scrollController,
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            CupertinoSliverNavigationBar(
-              largeTitle: isSearchScreen ? searchWidget : Text(title),
-              middle: isSearchScreen ? const Text("Search") : null,
-            ),
-            CupertinoSliverRefreshControl(
-              onRefresh: () async {
-                await mutator.getNews();
-              },
-            ),
-            StreamBuilder(
-                stream: state.news,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final news = snapshot.data.values.map((element) {
-                          return ListItemView(
-                            key : ValueKey(element.url),
-                            name : element.source["name"],
-                            url : element.url,
-                            title : element.title,
-                            publishedAt : element.publishedAt,
-                            urlToImage : element.urlToImage,
-                            liked : element.liked,
-                          );
-                        }).toList();
-                    return SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        return news[index];
-                      }, childCount: snapshot.data.length),
-                    );
-                  } else {
-                    return const SliverToBoxAdapter();
-                  }
-                }),
-            emptyBox
-          ],
-        );
-      },
+    return CustomScrollView(
+      controller: scrollController,
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        CupertinoSliverNavigationBar(
+          heroTag: ValueKey(title),
+          largeTitle: isSearchScreen ? searchWidget : Text(title),
+          middle: isSearchScreen ? const Text("Search") : null,
+        ),
+        CupertinoSliverRefreshControl(
+          onRefresh: () async {
+            await mutator.getNews();
+          },
+        ),
+        StreamBuilder(
+            stream: state.news,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final news = snapshot.data.values.map((element) {
+                  return ListItemView(
+                    key: ValueKey(element.url),
+                    name: element.source["name"],
+                    url: element.url,
+                    title: element.title,
+                    publishedAt: element.publishedAt,
+                    urlToImage: element.urlToImage,
+                    liked: element.liked,
+                  );
+                }).toList();
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    return news[index];
+                  }, childCount: snapshot.data.length),
+                );
+              } else {
+                return const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 16.0),
+                    child: CupertinoActivityIndicator(
+                      radius: 14.0,
+                    ),
+                  ),
+                );
+              }
+            }),
+        emptyBox
+      ],
     );
   }
 

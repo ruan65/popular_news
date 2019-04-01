@@ -26,91 +26,91 @@ class SettingsScreenState extends State<SettingsScreenView> {
   }
 
   build(context) {
-    return CupertinoTabView(builder: (context) {
-      return CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
-        CupertinoSliverNavigationBar(
-          largeTitle: const Text("Settings"),
+    return CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+      CupertinoSliverNavigationBar(
+        largeTitle: const Text("Settings"),
+      ),
+      SliverPadding(
+        padding: EdgeInsets.only(left: 18.0, top: 18.0, bottom: 8.0),
+        sliver: SliverToBoxAdapter(
+          child: Text("Tags",
+              style: TextStyle(
+                  fontSize: 20,
+                  color: lightTheme ? Colors.black : Colors.white)),
         ),
-        SliverPadding(
-          padding: EdgeInsets.only(left: 18.0, top: 18.0, bottom: 8.0),
-          sliver: SliverToBoxAdapter(
-            child: Text("Tags",
-                style: TextStyle(
-                    fontSize: 20,
-                    color: lightTheme ? Colors.black : Colors.white)),
-          ),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.only(left: 18.0),
-          sliver: SliverToBoxAdapter(
-            child: Wrap(
-                spacing: 8.0,
-                children: settingsItems.map((item) {
-                  return ActionChip(
-                    padding: EdgeInsets.all(8.0),
-                    //shape: ShapeBorder.lerp(a, b, t),
-                    shadowColor: lightTheme
-                        ? CupertinoColors.activeBlue
-                        : CupertinoColors.activeOrange,
-                    onPressed: () async {
-                      item.isSelected
-                          ? await changeThemes(isRemove: true, theme: item.name)
-                          : await changeThemes(
-                              isRemove: false, theme: item.name);
-                      setState(() {
-                        item.isSelected = !item.isSelected;
-                      });
-                      mainMutator.getNews();
-                      mainScreenView.scrollToTop();
-                    },
-                    backgroundColor: item.isSelected
-                        ? CupertinoColors.activeOrange
-                        : lightTheme
-                            ? CupertinoColors.extraLightBackgroundGray
-                            : CupertinoColors.darkBackgroundGray
-                                .withOpacity(0.95),
-                    label: Text(item.name),
-                    labelStyle: TextStyle(
-                        fontSize: 16,
-                        color: lightTheme
-                            ? CupertinoColors.darkBackgroundGray
-                            : CupertinoColors.white),
-                  );
-                }).toList()),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Divider(
-              color: lightTheme
-                  ? CupertinoColors.lightBackgroundGray
-                  : CupertinoColors.inactiveGray.withOpacity(0.5)),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 18.0),
-          sliver: SliverToBoxAdapter(
-              child: Row(
-            children: [
-              Expanded(
-                child: Text("Dark Mode",
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: lightTheme ? Colors.black : Colors.white)),
-              ),
-              CupertinoSwitch(
-                  activeColor: CupertinoColors.activeOrange,
-                  value: !lightTheme,
-                  onChanged: (value) async {
-                    (await provider.prefs).setBool("t", !lightTheme);
-                    setState(() {});
-                    newsAppState.setState(() {
-                      lightTheme = !lightTheme;
+      ),
+      SliverPadding(
+        padding: EdgeInsets.only(left: 18.0),
+        sliver: SliverToBoxAdapter(
+          child: Wrap(
+              spacing: 8.0,
+              children: settingsItems.map((item) {
+                return Material(
+                  color: lightTheme
+                          ? CupertinoColors.white
+                          : CupertinoColors.darkBackgroundGray,
+                    child: ActionChip(
+                  padding: EdgeInsets.all(8.0),
+                  shadowColor: lightTheme
+                      ? CupertinoColors.activeBlue
+                      : CupertinoColors.activeOrange,
+                  onPressed: () async {
+                    item.isSelected
+                        ? await changeThemes(isRemove: true, theme: item.name)
+                        : await changeThemes(isRemove: false, theme: item.name);
+                    setState(() {
+                      item.isSelected = !item.isSelected;
                     });
-                  }),
-            ],
-          )),
+                    mainMutator.getNews();
+                    mainScreenView.scrollToTop();
+                  },
+                  backgroundColor: item.isSelected
+                      ? CupertinoColors.activeOrange
+                      : lightTheme
+                          ? CupertinoColors.extraLightBackgroundGray
+                          : CupertinoColors.darkBackgroundGray
+                              .withOpacity(0.95),
+                  label: Text(item.name),
+                  labelStyle: TextStyle(
+                      fontSize: 16,
+                      color: lightTheme
+                          ? CupertinoColors.darkBackgroundGray
+                          : CupertinoColors.white),
+                ));
+              }).toList()),
         ),
-      ]);
-    });
+      ),
+      SliverToBoxAdapter(
+        child: Divider(
+            color: lightTheme
+                ? CupertinoColors.lightBackgroundGray
+                : CupertinoColors.inactiveGray.withOpacity(0.5)),
+      ),
+      SliverPadding(
+        padding: EdgeInsets.symmetric(horizontal: 18.0),
+        sliver: SliverToBoxAdapter(
+            child: Row(
+          children: [
+            Expanded(
+              child: Text("Dark Mode",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: lightTheme ? Colors.black : Colors.white)),
+            ),
+            CupertinoSwitch(
+                activeColor: CupertinoColors.activeOrange,
+                value: !lightTheme,
+                onChanged: (value) async {
+                  (await provider.prefs).setBool("t", !lightTheme);
+                  setState(() {});
+                  newsAppState.setState(() {
+                    lightTheme = !lightTheme;
+                  });
+                }),
+          ],
+        )),
+      ),
+    ]);
   }
 
   getSelectedThemes() async {

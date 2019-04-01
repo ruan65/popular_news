@@ -10,48 +10,39 @@ import 'screens/settings_screen_element/settings_screen_view.dart';
 import 'package:clean_news_ai/provider/provider.dart';
 
 class RootElement extends StatelessWidget {
-    
   build(context) {
     _showUpdateDialog(context);
     return CupertinoTabScaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: lightTheme
-            ? CupertinoColors.white
-            : CupertinoColors.darkBackgroundGray,
-        tabBar: CupertinoTabBar(
-          items: [
-            const BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.time),
-            ),
-            const BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.search),
-            ),
-            const BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.bookmark),
-            ),
-            const BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.gear),
-            ),
-          ],
-          activeColor: CupertinoColors.activeOrange,
-        ),
-        tabBuilder: (context, index) {
-          switch (index) {
-            case 0:
-              return mainScreenView;
-              break;
-            case 1:
-              return searchScreenView;
-              break;
-            case 2:
-              return favoritesScreenView;
-              break;
-            case 3:
-              return settingsScreenView;
-              break;
-          }
-        });
-      }
+          resizeToAvoidBottomInset: false,
+          backgroundColor: lightTheme
+              ? CupertinoColors.white
+              : CupertinoColors.darkBackgroundGray,
+          tabBar: CupertinoTabBar(
+            items: [
+              const BottomNavigationBarItem(
+                icon: const Icon(CupertinoIcons.time),
+              ),
+              const BottomNavigationBarItem(
+                icon: const Icon(CupertinoIcons.search),
+              ),
+              const BottomNavigationBarItem(
+                icon: const Icon(CupertinoIcons.bookmark),
+              ),
+              const BottomNavigationBarItem(
+                icon: const Icon(CupertinoIcons.gear),
+              ),
+            ],
+            activeColor: CupertinoColors.activeOrange,
+          ),
+          tabBuilder: (context, index) {
+            switch (index) {
+              case 0: return mainScreenView;
+              case 1: return searchScreenView;
+              case 2: return favoritesScreenView;
+              case 3: return settingsScreenView;
+            }
+          });
+  }
 
   _showUpdateDialog(context) async {
     final result = await provider.isReadyToUpdate();
@@ -76,5 +67,3 @@ class RootElement extends StatelessWidget {
     }
   }
 }
-
-

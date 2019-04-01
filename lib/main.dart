@@ -27,11 +27,7 @@ class NewsAppState extends State<NewsApp> {
       theme: CupertinoThemeData(
         brightness: lightTheme ? Brightness.light : Brightness.dark,
       ),
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        resizeToAvoidBottomPadding: false,
-        body: RootElement(),
-      ),
+      home: RootElement(),
     );
   }
 }

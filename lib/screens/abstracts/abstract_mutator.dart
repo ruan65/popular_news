@@ -13,7 +13,6 @@ abstract class AbstractMutator {
   }
 
   getNews() async {
-    //state.broadcaster.add(null);
     state.cashedArticles = {};
     final themes = (await provider.prefs).getStringList('themes') ?? [];
     if (themes.isNotEmpty) {

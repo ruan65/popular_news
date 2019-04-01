@@ -17,8 +17,15 @@ class ListItemView extends StatefulWidget {
   final urlToImage;
   bool liked;
 
-  ListItemView({Key key,this.name, this.url, this.title, this.publishedAt,
-       this.urlToImage, this.liked}) : super(key: key);
+  ListItemView(
+      {Key key,
+      this.name,
+      this.url,
+      this.title,
+      this.publishedAt,
+      this.urlToImage,
+      this.liked})
+      : super(key: key);
 
   createState() => ListItemViewState();
 }
@@ -46,17 +53,27 @@ class ListItemViewState extends State<ListItemView>
         animation: animation,
         builder: (context, _) {
           return GestureDetector(
-            onTap: () => Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    fullscreenDialog: true,
-                    title: widget.name,
-                    builder: (context) {
-                      return WebViewRoute(widget.url);
-                    })),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      settings:
+                          RouteSettings(name: widget.url, isInitialRoute: true),
+                      builder: (context) {
+                        return CupertinoPageScaffold(
+                          navigationBar: CupertinoNavigationBar(
+                            middle: Text(widget.name),
+                          ),
+                          child: WebView(
+                            initialUrl: widget.url,
+                          ),
+                        );
+                      }));
+            },
             child: Card(
               color: Colors.transparent,
               child: Container(
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.cover,
@@ -126,8 +143,7 @@ class ListItemViewState extends State<ListItemView>
                       padding: EdgeInsets.all(16.0),
                       alignment: Alignment.centerRight,
                       child: Text(widget.publishedAt,
-                          style: TextStyle(
-                              color: CupertinoColors.white)),
+                          style: TextStyle(color: CupertinoColors.white)),
                     ),
                   ],
                 ),
@@ -140,18 +156,5 @@ class ListItemViewState extends State<ListItemView>
   dispose() {
     controller.dispose();
     super.dispose();
-  }
-}
-
-class WebViewRoute extends StatelessWidget {
-  final url;
-  WebViewRoute(this.url);
-
-  build(context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(),
-      child:
-          WebView(initialUrl: url),
-    );
   }
 }

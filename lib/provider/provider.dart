@@ -12,7 +12,8 @@ import 'package:sqflite/sqflite.dart';
 
 class NewsApiProvider {
   final prefs = SharedPreferences.getInstance();
-  final _fireStore = Firestore.instance..enablePersistence(true);
+  ///..enablePersistence(true)
+  final _fireStore = Firestore.instance;
   final platform = const MethodChannel('samples.flutter.io/battery');
 
   Map<String, Article> mapArticles = {};
@@ -97,7 +98,7 @@ class NewsApiProvider {
     var newVersionDoc =
         await _fireStore.collection("appInfo").document("flutterNews").get();
     int newVersion = newVersionDoc.data.values.toList()[0];
-    return newVersion > 9;
+    return newVersion > 12;
   }
 
   // saveNewsInDatabase({String theme, Article article}) async {
