@@ -1,9 +1,9 @@
 import 'package:intl/intl.dart';
 
-class ItemModel {
+class ArticleModel {
   List<Article> _articles = [];
 
-  ItemModel.fromJson(Map<String, dynamic> parsedJson) {
+  ArticleModel.fromJson(Map<String, dynamic> parsedJson) {
     List<Article> temp = [];
     for (int i = 0; i < parsedJson['articles'].length; i++) {
       Article article = Article(parsedJson['articles'][i]);

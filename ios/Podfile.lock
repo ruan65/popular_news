@@ -69,9 +69,6 @@ PODS:
     - GoogleUtilities/Environment (~> 5.3)
     - GoogleUtilities/UserDefaults (~> 5.3)
   - Flutter (1.0.0)
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
   - GoogleAppMeasurement (5.6.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
@@ -121,17 +118,10 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
-  - path_provider (0.0.1):
-    - Flutter
   - Protobuf (3.6.1)
   - share (0.5.2):
     - Flutter
   - shared_preferences (0.0.1):
-    - Flutter
-  - sqflite (0.0.1):
-    - Flutter
-    - FMDB (~> 2.7.2)
-  - url_launcher (0.0.1):
     - Flutter
   - webview_flutter (0.0.1):
     - Flutter
@@ -141,11 +131,8 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
-  - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
@@ -159,7 +146,6 @@ SPEC REPOS:
     - FirebaseDatabase
     - FirebaseFirestore
     - FirebaseInstanceID
-    - FMDB
     - GoogleAppMeasurement
     - GoogleUtilities
     - "gRPC-C++"
@@ -178,16 +164,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/flutter/ios"
   launch_review:
     :path: ".symlinks/plugins/launch_review/ios"
-  path_provider:
-    :path: ".symlinks/plugins/path_provider/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  sqflite:
-    :path: ".symlinks/plugins/sqflite/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
@@ -204,7 +184,6 @@ SPEC CHECKSUMS:
   FirebaseFirestore: e95af4fe30552092d6e72a8f97ea475d93891b75
   FirebaseInstanceID: 4522aad88f69297622062c0e9ffccdee3dd9b151
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleAppMeasurement: 008e04ecd8efedd97a693aea8634aefe220bd26e
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
   "gRPC-C++": e76441995900ac90e9bd98644ab4733f12521edf
@@ -213,12 +192,9 @@ SPEC CHECKSUMS:
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
-  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   share: 7d22fe8baedfe93aefd864bf0b73f29711fbb0a3
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
-  sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
-  url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
   webview_flutter: 1aa7604e6cdb451a9b7ed2c37d5454c0b440246b
 
 PODFILE CHECKSUM: 595d6f0180b766d8c3c4032887288bd3a0a049f0

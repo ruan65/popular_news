@@ -8,11 +8,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import 'package:sqflite/sqflite.dart';
+
 
 class NewsApiProvider {
   final prefs = SharedPreferences.getInstance();
-  final _fireStore = Firestore.instance.enablePersistence(true);
+  final _fireStore = Firestore.instance..enablePersistence(true);
   final platform = const MethodChannel('samples.flutter.io/battery');
 
   Map<String, Article> mapArticles = {};
@@ -21,7 +21,7 @@ class NewsApiProvider {
   var uid;
 
   Future<Map<String, Article>> getNews({bool search, String theme}) async {
-    //final _apiKey = apikeys[Random().nextInt(4)];
+    final _apiKey = apikeys[Random().nextInt(4)];
     final lastRequest = (await prefs).getString('lastRequest') ??
         "12138172827816372163761263126";
     var lang = await platform.invokeMethod('lang');
@@ -40,7 +40,7 @@ class NewsApiProvider {
     if (response.statusCode != 200)
       return await getNews(search: search, theme: theme);
     final List<Article> articles =
-        ItemModel.fromJson(json.decode(response.body)).articles;
+        ArticleModel.fromJson(json.decode(response.body)).articles;
 
     mapArticles = {};
     savedArticles = savedArticles ?? await getSavedNews();
@@ -81,7 +81,7 @@ class NewsApiProvider {
         .updateData({key: FieldValue.delete()});
   }
 
-  showMyID() async {
+  Future<String> showMyID() async {
     (await prefs).getString('id') ?? _saveMyID();
     return (await prefs).getString('id');
   }
@@ -92,47 +92,13 @@ class NewsApiProvider {
     (await prefs).setString('id', myid);
   }
 
-  isReadyToUpdate() async {
+  Future<bool> isReadyToUpdate() async {
     await _fireStore.settings(timestampsInSnapshotsEnabled: true);
     var newVersionDoc =
         await _fireStore.collection("appInfo").document("flutterNews").get();
     int newVersion = newVersionDoc.data.values.toList()[0];
-    return newVersion > 12;
+    return newVersion > 13;
   }
-
-  // saveNewsInDatabase({String theme, Article article}) async {
-  //   ///
-  // Article.fromMap(map) {
-  //   _source = {"name": map["name"]};
-  //   _author = "nothing";
-  //   _title = map["title"];
-  //   _description = "nothing";
-  //   _url = map["url"];
-  //   _urlToImage = map["urlToImage"];
-  //   _publishedAt = map["publishedAt"];
-  //   _content = map["content"];
-  // };
-  // ///
-
-  //   final databasesPath = await getDatabasesPath();
-  //   final path = "$databasesPath$theme.db";
-  //   Database database = await openDatabase(path, version: 1,
-  //       onCreate: (Database db, int version) async {
-  //     await db.execute(
-  //         'CREATE TABLE $theme (id INTEGER PRIMARY KEY, name TEXT, title TEXT, url TEXT, urlToImage TEXT, publishedAt TEXT, content TEXT)');
-  //   });
-
-  //   ///todo
-  //   await database.transaction((txn) async {
-  //     int id1 = await txn.rawInsert(
-  //         'INSERT INTO Test(name, value, num) VALUES("some name", 1234, 456.789)');
-  //     print('inserted1: $id1');
-  //     int id2 = await txn.rawInsert(
-  //         'INSERT INTO Test(name, value, num) VALUES(?, ?, ?)',
-  //         ['another name', 12345678, 3.1416]);
-  //     print('inserted2: $id2');
-  //   });
-  // }
 }
 
 final provider = NewsApiProvider();

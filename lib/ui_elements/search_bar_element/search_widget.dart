@@ -1,4 +1,3 @@
-import 'package:clean_news_ai/screens/search_screen_element/search_screen_mutator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +28,7 @@ class SearchWidget extends StatelessWidget {
               onSubmitted: (value) async {
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.setString("lastRequest", value);
-                searchMutator.getNews();
+                //searchMutator.getNews();
               }),
         ));
   }

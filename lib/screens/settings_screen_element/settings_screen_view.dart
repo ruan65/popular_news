@@ -1,11 +1,10 @@
 import 'package:clean_news_ai/main.dart';
-import 'package:clean_news_ai/screens/main_screen_element/main_screen_mutator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clean_news_ai/provider/provider.dart';
-import 'package:clean_news_ai/screens/main_screen_element/main_screen_view.dart';
 
 class SettingsScreenView extends StatefulWidget {
+  const SettingsScreenView({Key key}) : super(key: key);
   createState() => SettingsScreenState();
 }
 
@@ -61,8 +60,8 @@ class SettingsScreenState extends State<SettingsScreenView> {
                     setState(() {
                       item.isSelected = !item.isSelected;
                     });
-                    mainMutator.getNews();
-                    mainScreenView.scrollToTop();
+               //     mainMutator.getNews();
+                  //  mainScreenView.scrollToTop();
                   },
                   backgroundColor: item.isSelected
                       ? CupertinoColors.activeOrange

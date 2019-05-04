@@ -1,15 +1,11 @@
 import 'package:clean_news_ai/screens/abstracts/abstract_view.dart';
-import 'favorites_screen_mutator.dart';
-import 'favorites_screen_state.dart';
+import 'package:clean_news_ai/provider/provider.dart';
+import 'package:flutter/material.dart';
 
 class FavoritesScreenView extends AbstractScreenView {
-  FavoritesScreenView(mutator, title, state)
-      : super(
-            mutator: favoritesMutator,
-            title: title,
-            state: favoritesScreenState,
-            isSearchScreen: false);
+  FavoritesScreenView({Key key}) : super(key: key);
+  getNews() async {
+    cashedArticles.clear();
+    broadcaster.add(await provider.getSavedNews());
+  }
 }
-
-final favoritesScreenView =
-    FavoritesScreenView(favoritesMutator, "Favorites", favoritesScreenState);

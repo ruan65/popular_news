@@ -1,9 +1,5 @@
 import 'dart:core';
-import 'package:cached_network_image/src/cached_network_image_provider.dart';
 import 'package:clean_news_ai/provider/provider.dart';
-import 'package:clean_news_ai/screens/main_screen_element/main_screen_mutator.dart';
-import 'package:clean_news_ai/screens/search_screen_element/search_screen_mutator.dart';
-import 'package:clean_news_ai/screens/favorites_screen_element/favorites_screen_mutator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
@@ -15,7 +11,7 @@ class ListItemView extends StatefulWidget {
   final title;
   final publishedAt;
   final urlToImage;
-  bool liked;
+  final liked;
 
   ListItemView(
       {Key key,
@@ -34,16 +30,18 @@ class ListItemViewState extends State<ListItemView>
     with TickerProviderStateMixin {
   AnimationController controller;
   Animation animation;
+  bool liked;
 
   initState() {
     super.initState();
+    liked = widget.liked;
     controller = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
     animation = Tween(begin: 1.0, end: 0.5).animate(controller);
   }
 
   build(context) {
-    final image = CachedNetworkImageProvider(widget.urlToImage ?? "nothing");
+    final image = Image.network(widget.urlToImage ?? "nothing").image;
     image
         .resolve(ImageConfiguration())
         .addListener((imageInfo, synchronousCall) {
@@ -54,21 +52,18 @@ class ListItemViewState extends State<ListItemView>
         builder: (context, _) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      settings:
-                          RouteSettings(name: widget.url, isInitialRoute: true),
-                      builder: (context) {
-                        return CupertinoPageScaffold(
-                          navigationBar: CupertinoNavigationBar(
-                            middle: Text(widget.name),
-                          ),
-                          child: WebView(
-                            initialUrl: widget.url,
-                          ),
-                        );
-                      }));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                return Scaffold(
+                  appBar: CupertinoNavigationBar(
+                    previousPageTitle: "back",
+                    transitionBetweenRoutes: false,
+                    middle: Text(widget.name),
+                  ),
+                  body: WebView(
+                    initialUrl: widget.url,
+                  ),
+                );
+              }));
             },
             child: Card(
               color: Colors.transparent,
@@ -103,12 +98,12 @@ class ListItemViewState extends State<ListItemView>
                               ),
                               IconButton(
                                 icon: Icon(
-                                    widget.liked
+                                    liked
                                         ? CupertinoIcons.bookmark_solid
                                         : CupertinoIcons.bookmark,
                                     color: CupertinoColors.activeOrange),
                                 onPressed: () async {
-                                  widget.liked
+                                  liked
                                       ? provider.deleteMyArticle(
                                           url: widget.url)
                                       : provider.uploadMyArticle(holder: {
@@ -119,12 +114,12 @@ class ListItemViewState extends State<ListItemView>
                                           "urlToImage": widget.urlToImage,
                                         });
                                   setState(() {
-                                    widget.liked = !widget.liked;
+                                    liked = !liked;
                                   });
-                                  await favoritesMutator.getNews();
-                                  searchMutator.updateStars(url: widget.url);
-                                  mainMutator.updateStars(url: widget.url);
-                                  favoritesMutator.updateStars(url: widget.url);
+                                  // await favoritesMutator.getNews();
+                                  // searchMutator.updateStars(url: widget.url);
+                                  // mainMutator.updateStars(url: widget.url);
+                                  // favoritesMutator.updateStars(url: widget.url);
                                 },
                               )
                             ],

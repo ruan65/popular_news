@@ -18,17 +18,26 @@ class NewsApp extends StatefulWidget {
 
 class NewsAppState extends State<NewsApp> {
   build(context) {
-    return CupertinoApp(
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      debugShowCheckedModeBanner: false,
-      theme: CupertinoThemeData(
-        brightness: lightTheme ? Brightness.light : Brightness.dark,
-      ),
-      home: RootElement(),
-    );
+    return MaterialApp(
+        // localizationsDelegates: [
+        //   GlobalMaterialLocalizations.delegate,
+        //   GlobalWidgetsLocalizations.delegate,
+        // ],
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          brightness: lightTheme ? Brightness.light : Brightness.dark,
+        ),
+        home: Stack(
+          children: <Widget>[
+            Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Colors.black, Colors.blue]))),
+            RootElement()
+          ],
+        ));
   }
 }
 
