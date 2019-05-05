@@ -9,7 +9,6 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-
 class NewsApiProvider {
   final prefs = SharedPreferences.getInstance();
   final _fireStore = Firestore.instance..enablePersistence(true);
@@ -22,10 +21,8 @@ class NewsApiProvider {
 
   Future<Map<String, Article>> getNews({bool search, String theme}) async {
     final _apiKey = apikeys[Random().nextInt(4)];
-    final lastRequest = (await prefs).getString('lastRequest') ??
-        "12138172827816372163761263126";
     var lang = await platform.invokeMethod('lang');
-
+    final lastRequest = (await prefs).getString('lastRequest') ?? "google";
     Response response;
 
     if (search) {
@@ -37,8 +34,6 @@ class NewsApiProvider {
           "https://newsapi.org/v2/top-headlines?country=$lang&category=$theme&pageSize=100&apiKey=$_apiKey");
     }
 
-    if (response.statusCode != 200)
-      return await getNews(search: search, theme: theme);
     final List<Article> articles =
         ArticleModel.fromJson(json.decode(response.body)).articles;
 

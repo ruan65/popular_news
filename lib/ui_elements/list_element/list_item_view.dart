@@ -1,9 +1,17 @@
 import 'dart:core';
 import 'package:clean_news_ai/provider/provider.dart';
+import 'package:clean_news_ai/screens/favorites_screen_element/favorites_mutator.dart';
+import 'package:clean_news_ai/screens/favorites_screen_element/favorites_screen_view.dart';
+import 'package:clean_news_ai/screens/main_screen/main_screen_mutator.dart';
+import 'package:clean_news_ai/screens/main_screen/main_screen_view.dart';
+import 'package:clean_news_ai/screens/search_screen_element/search_screen_mutator.dart';
+import 'package:clean_news_ai/screens/search_screen_element/search_screen_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:clean_news_ai/root_element.dart';
 
 class ListItemView extends StatefulWidget {
   final name;
@@ -11,7 +19,7 @@ class ListItemView extends StatefulWidget {
   final title;
   final publishedAt;
   final urlToImage;
-  final liked;
+  bool liked;
 
   ListItemView(
       {Key key,
@@ -30,11 +38,10 @@ class ListItemViewState extends State<ListItemView>
     with TickerProviderStateMixin {
   AnimationController controller;
   Animation animation;
-  bool liked;
+
 
   initState() {
     super.initState();
-    liked = widget.liked;
     controller = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: this);
     animation = Tween(begin: 1.0, end: 0.5).animate(controller);
@@ -65,83 +72,92 @@ class ListItemViewState extends State<ListItemView>
                 );
               }));
             },
-            child: Card(
-              color: Colors.transparent,
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: image,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(animation.value),
-                            BlendMode.hardLight))),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 16.0, right: 4.0),
-                      alignment: Alignment.centerRight,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Text(widget.name,
-                                  style:
-                                      TextStyle(color: CupertinoColors.white))),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(CupertinoIcons.reply,
-                                    color: Colors.white),
-                                onPressed: () async {
-                                  Share.share(widget.url);
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                    liked
-                                        ? CupertinoIcons.bookmark_solid
-                                        : CupertinoIcons.bookmark,
-                                    color: CupertinoColors.activeOrange),
-                                onPressed: () async {
-                                  liked
-                                      ? provider.deleteMyArticle(
-                                          url: widget.url)
-                                      : provider.uploadMyArticle(holder: {
-                                          "name": widget.name,
-                                          "url": widget.url,
-                                          "title": widget.title,
-                                          "publishedAt": widget.publishedAt,
-                                          "urlToImage": widget.urlToImage,
-                                        });
-                                  setState(() {
-                                    liked = !liked;
-                                  });
-                                  // await favoritesMutator.getNews();
-                                  // searchMutator.updateStars(url: widget.url);
-                                  // mainMutator.updateStars(url: widget.url);
-                                  // favoritesMutator.updateStars(url: widget.url);
-                                },
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      alignment: Alignment.centerLeft,
-                      child: Text(widget.title,
-                          style: TextStyle(
-                              color: CupertinoColors.white, fontSize: 20)),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(16.0),
-                      alignment: Alignment.centerRight,
-                      child: Text(widget.publishedAt,
-                          style: TextStyle(color: CupertinoColors.white)),
-                    ),
+            child: Container(
+              margin: EdgeInsets.only(
+                  left: ScreenUtil().setWidth(32.0),
+                  right: ScreenUtil().setWidth(32.0),
+                  bottom: ScreenUtil().setHeight(32.0)),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.transparent.withOpacity(0.1),
+                      offset: Offset(ScreenUtil().setWidth(8.0), ScreenUtil().setWidth(8.0)),
+                      blurRadius: 8.0,
+                    )
                   ],
-                ),
+                  borderRadius:
+                      BorderRadius.circular(ScreenUtil().setWidth(18.0)),
+                  border: Border.all(color: Colors.black12),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: image,
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(animation.value),
+                          BlendMode.hardLight))),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 16.0, right: 4.0),
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Text(widget.name,
+                                style:
+                                    TextStyle(color: CupertinoColors.white))),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(CupertinoIcons.reply,
+                                  color: Colors.white),
+                              onPressed: () async {
+                                Share.share(widget.url);
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                  widget.liked
+                                      ? CupertinoIcons.bookmark_solid
+                                      : CupertinoIcons.bookmark,
+                                  color: Colors.white),
+                              onPressed: () async {
+                                widget.liked
+                                    ? provider.deleteMyArticle(url: widget.url)
+                                    : provider.uploadMyArticle(holder: {
+                                        "name": widget.name,
+                                        "url": widget.url,
+                                        "title": widget.title,
+                                        "publishedAt": widget.publishedAt,
+                                        "urlToImage": widget.urlToImage,
+                                      });
+                                setState(() {
+                                  widget.liked = !widget.liked;
+                                });
+                                await favoritesScreenMutator.getNews();
+                                searchScreenMutator.updateStars(url: widget.url);
+                                mainScreenMutator.updateStars(url: widget.url);
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text(widget.title,
+                        style: TextStyle(
+                            color: CupertinoColors.white, fontSize: 20)),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    alignment: Alignment.centerRight,
+                    child: Text(widget.publishedAt,
+                        style: TextStyle(color: CupertinoColors.white)),
+                  ),
+                ],
               ),
             ),
           );

@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'package:clean_news_ai/screens/abstracts/abstract_view.dart';
+import 'package:clean_news_ai/screens/main_screen/main_screen_view.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'main.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/favorites_screen_element/favorites_screen_view.dart';
 import 'screens/search_screen_element/search_screen_view.dart';
 import 'screens/settings_screen_element/settings_screen_view.dart';
@@ -14,22 +13,16 @@ import 'package:clean_news_ai/provider/provider.dart';
 import 'res/strings.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class RootElement extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return RootElementState();
-  }
+class RootBody extends StatefulWidget {
+  createState() => RootBodyState();
 }
 
-class RootElementState extends State<RootElement>
-    with TickerProviderStateMixin {
+class RootBodyState extends State<RootBody> with TickerProviderStateMixin {
   TabController _tabController;
   int currentIndex = 0;
-
   final titles = [en['daily'], en['search'], en['favorites'], en['settings']];
 
-  @override
-  void initState() {
+  initState() {
     super.initState();
     _tabController = TabController(
       initialIndex: 0,
@@ -38,17 +31,13 @@ class RootElementState extends State<RootElement>
     )..addListener(() {
         setState(() {
           _tabController.animateTo(_tabController.index,
-              duration: Duration(milliseconds: 200));
+              duration: Duration(milliseconds: 100));
           currentIndex = _tabController.index;
         });
       });
   }
 
-  //_showUpdateDialog(context);
   build(context) {
-    ScreenUtil.instance =
-        ScreenUtil(width: 750, height: 1334, allowFontScaling: true)
-          ..init(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: NestedScrollView(
@@ -57,10 +46,11 @@ class RootElementState extends State<RootElement>
             CupertinoSliverNavigationBar(
                 border: null,
                 backgroundColor: Colors.transparent,
+                transitionBetweenRoutes: true,
                 largeTitle: FadeTransition(
                   opacity: Tween(begin: 0.0, end: 1.0).animate(
                       AnimationController(
-                          duration: Duration(milliseconds: 500), vsync: this)
+                          duration: Duration(milliseconds: 200), vsync: this)
                         ..forward()),
                   child: Text(
                     titles[currentIndex].toUpperCase(),
@@ -74,25 +64,20 @@ class RootElementState extends State<RootElement>
         body: Stack(
           children: <Widget>[
             TabBarView(
+              physics: BouncingScrollPhysics(),
               controller: _tabController,
               children: <Widget>[
-                AbstractScreenView(
-                  key: PageStorageKey('main'),
-                ),
-                FavoritesScreenView(key: PageStorageKey('favorites')),
-                SearchScreenView(
-                  key: PageStorageKey('search'),
-                ),
-                SettingsScreenView(
-                  key: PageStorageKey('settings'),
-                ),
+                mainScreenView,
+                searchScreenView,
+                favoritesScreenView,
+                settingsScreenView
               ],
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: CupertinoTabBar(
                 backgroundColor: Colors.transparent,
-                activeColor: Colors.blue,
+                activeColor: Colors.blueAccent,
                 inactiveColor: Colors.white,
                 currentIndex: currentIndex,
                 onTap: (index) {
@@ -147,3 +132,5 @@ class RootElementState extends State<RootElement>
     }
   }
 }
+
+class MainScreenView {}
