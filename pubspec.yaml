@@ -4,9 +4,12 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  equatable:
+    git:
+      url: git://github.com/Renesanse/equatable.git
 
   flutter:
     sdk: flutter
@@ -20,6 +23,9 @@ dependencies:
   uuid:
   webview_flutter:
   worker_manager:
+  flutter_bloc:
+  built_redux: ^7.5.4
+
 
 dev_dependencies:
   flutter_test:

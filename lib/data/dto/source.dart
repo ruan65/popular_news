@@ -32,7 +32,7 @@ class Source {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, Object> toMap() {
     return {
       'id': this.id,
       'name': this.name,

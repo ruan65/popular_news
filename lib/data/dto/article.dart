@@ -1,5 +1,6 @@
-import 'package:clean_news_ai/data/models/source.dart';
+import 'package:clean_news_ai/data/dto/source.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 class Article {
   final Source source;
@@ -83,7 +84,7 @@ class Article {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, Object> toMap() {
     return {
       'source': this.source,
       'author': this.author,
@@ -97,19 +98,18 @@ class Article {
   }
 
   factory Article.fromMap(Map<String, dynamic> map) {
+    final format = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    DateTime unformedDate = format.parse(map['publishedAt'] as String ?? '');
+    final time = DateTime.now().difference(unformedDate).inHours.toString() + ' часа назад';
     return Article(
       source: Source.fromMap(map['source']),
-      author: map['author'] as String,
-      title: map['title'] as String,
-      description: map['description'] as String,
-      url: map['url'] as String,
-      urlToImage: map['urlToImage'] as String,
-      publishedAt: map['publishedAt'] as String,
-      content: map['content'] as String,
+      author: map['author'] as String ?? '',
+      title: map['title'] as String ?? '',
+      description: map['description'] as String ?? '',
+      url: map['url'] as String ?? '',
+      urlToImage: map['urlToImage'] as String ?? '',
+      publishedAt: time,
+      content: map['content'] as String ?? '',
     );
   }
 }
-
-//    DateFormat format = DateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//    DateTime unformedDate = format.parse(article["publishedAt"]);
-//    _publishedAt = "${unformedDate.day} ${months[unformedDate.month - 1]} ${unformedDate.year}";

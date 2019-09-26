@@ -1,4 +1,4 @@
-import 'package:clean_news_ai/data/models/article.dart';
+import 'package:clean_news_ai/data/dto/article.dart';
 import 'package:flutter/foundation.dart';
 
 class Answer {
@@ -45,7 +45,7 @@ class Answer {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, Object> toMap() {
     return {
       'status': this.status,
       'totalResults': this.totalResults,
@@ -55,8 +55,8 @@ class Answer {
 
   factory Answer.fromMap(Map<String, dynamic> map) {
     return Answer(
-      status: map['status'] as String,
-      totalResults: map['totalResults'] as int,
+      status: map['status'] as String ?? '',
+      totalResults: map['totalResults'] as int ?? 0,
       articles: map['articles'].map<Article>((article) => Article.fromMap(article)).toList(),
     );
   }
