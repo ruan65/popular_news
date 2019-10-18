@@ -10,7 +10,7 @@ abstract class API {
 
   Future<String> searchArticles({@required String keyWord});
 
-  factory API() => _NewsApi();
+  factory API.newsAPI() => _NewsApi();
 }
 
 class _NewsApi implements API {
@@ -18,7 +18,7 @@ class _NewsApi implements API {
   Future<String> getTopArticles({String category}) async {
     try {
       final response = await get(
-          "https://newsapi.org/v2/top-headlines?country=ru&category=$category&pageSize=5&apiKey"
+          "https://newsapi.org/v2/top-headlines?country=ru&category=$category&pageSize=100&apiKey"
           "=$apiKey");
       final jsonData = response.body;
       return jsonData;

@@ -11,6 +11,7 @@ public class MainActivity extends FlutterActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         GeneratedPluginRegistrant.registerWith(this);
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(

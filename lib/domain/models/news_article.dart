@@ -1,12 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:clean_news_ai/data/dto/article.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 
 class ArticleModel {
-  final bool isSaved;
+  bool isSaved;
   final Article article;
 
-  const ArticleModel({
-    @required this.isSaved,
+  ArticleModel({
     @required this.article,
   });
 
@@ -23,20 +24,20 @@ class ArticleModel {
 
   @override
   String toString() {
-    return 'NewsArticle{' + ' isSaved: $isSaved,' + ' article: $article,' + '}';
+    return 'ArticleModel{' + ' isSaved: $isSaved,' + ' article: $article,' + '}';
   }
 
   ArticleModel copyWith({
     bool isSaved,
     Article article,
+    Uint8List imageBytes,
   }) {
-    return ArticleModel(
-      isSaved: isSaved ?? this.isSaved,
+    return new ArticleModel(
       article: article ?? this.article,
     );
   }
 
-  Map<String, Object> toMap() {
+  Map<String, dynamic> toMap() {
     return {
       'isSaved': this.isSaved,
       'article': this.article,
@@ -45,7 +46,6 @@ class ArticleModel {
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
-      isSaved: map['isSaved'] as bool,
       article: map['article'] as Article,
     );
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 
+@HiveType()
 class Source {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String name;
 
   Source({
