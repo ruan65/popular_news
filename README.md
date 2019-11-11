@@ -1,6 +1,4 @@
-Architectural pattern
 
-https://medium.com/@dsrenesanse/flutter-architecture-pattern-vms-43c2defec03a
 
 Google Play
 
