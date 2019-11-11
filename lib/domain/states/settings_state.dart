@@ -1,14 +1,8 @@
-import 'dart:ui';
+import 'package:osam/domain/state/base_state.dart';
 
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-
-import 'base_state.dart';
-
-class SettingsState extends BaseState with EquatableMixin {
-  String theme = '';
-  Color color = Colors.blue;
-
+// ignore: must_be_immutable
+class SettingsState extends BaseState{
   @override
-  List<Object> get props => [theme, color];
+  Map<String, Object> get namedProps => null;
+
 }

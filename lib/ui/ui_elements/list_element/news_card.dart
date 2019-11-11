@@ -1,12 +1,12 @@
 import 'dart:core';
 
 import 'package:clean_news_ai/data/dto/article.dart';
-import 'package:clean_news_ai/domain/models/event.dart';
+import 'package:clean_news_ai/domain/event_enum.dart';
 import 'package:clean_news_ai/domain/models/news_article.dart';
-import 'package:clean_news_ai/domain/store.dart';
+import 'package:clean_news_ai/domain/states/top_news_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:osam/osam.dart';
 import 'package:share/share.dart';
 
 class NewsCard extends StatefulWidget {
@@ -44,7 +44,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final store = Provider.of<Store>(context);
+    final store = StoreProvider.of(context);
     return AnimatedBuilder(
         animation: animation,
         builder: (context, _) {
@@ -98,12 +98,15 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                                       : CupertinoIcons.book,
                                   color: Colors.white),
                               onPressed: () async {
-                                store.sendEvent(
-                                    event: Event(
+                                store.dispatchEvent<TopNewsState>(
+                                    event: Event.modify(
+                                        reducerCaller: _articleModel.isSaved
+                                            ? (state) => state.removeFavorite(_article.url)
+                                            : (state) => state.setFavorite(_article.url),
                                         type: _articleModel.isSaved
                                             ? EventType.removeFavorite
-                                            : EventType.addToFavorite,
-                                        bundle: _articleModel));
+                                            : EventType.addFavorite,
+                                        bundle: _article.url));
                               },
                             ),
                           ],

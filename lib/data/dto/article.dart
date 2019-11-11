@@ -30,7 +30,7 @@ class Article {
     @required this.url,
     @required this.urlToImage,
     @required this.publishedAt,
-    @required this.content,
+    this.content = '',
   });
 
   @override
@@ -127,7 +127,7 @@ class Article {
       description: map['description'] as String ?? '',
       url: map['url'] as String ?? '',
       urlToImage: map['urlToImage'] as String ?? '',
-      publishedAt: time,
+      publishedAt: time ?? '',
       content: map['content'] as String ?? '',
     );
   }

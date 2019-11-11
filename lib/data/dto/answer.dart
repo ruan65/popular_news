@@ -1,5 +1,4 @@
 import 'package:clean_news_ai/data/dto/article.dart';
-import 'package:flutter/foundation.dart';
 
 class Answer {
   final String status;
@@ -7,9 +6,9 @@ class Answer {
   final List<Article> articles;
 
   const Answer({
-    @required this.status,
-    @required this.totalResults,
-    @required this.articles,
+    this.status = '',
+    this.totalResults = 0,
+    this.articles = const <Article>[],
   });
 
   @override
@@ -57,7 +56,7 @@ class Answer {
     return Answer(
       status: map['status'] as String ?? '',
       totalResults: map['totalResults'] as int ?? 0,
-      articles: map['articles'].map<Article>((article) => Article.fromMap(article)).toList(),
+      articles: map['articles']?.map<Article>((article) => Article.fromMap(article)).toList(),
     );
   }
 }

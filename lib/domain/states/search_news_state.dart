@@ -1,11 +1,10 @@
-import 'package:clean_news_ai/domain/models/news_article.dart';
-import 'package:equatable/equatable.dart';
 
-import 'base_state.dart';
+import 'package:osam/domain/state/base_state.dart';
 
-class SearchNewsState extends BaseState with EquatableMixin {
-  final articles = <ArticleModel>[];
-
+// ignore: must_be_immutable
+class SearchState extends BaseState{
   @override
-  List<Object> get props => [articles];
+  // TODO: implement namedProps
+  Map<String, Object> get namedProps => null;
+
 }
