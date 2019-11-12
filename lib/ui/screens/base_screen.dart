@@ -34,8 +34,8 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
               slivers: <Widget>[TitleAppBar(title: 'Поиск')],
             ),
             FavoritesNewsScreen(PageStorageKey('favorites')),
-            CustomScrollView(
-              slivers: <Widget>[TitleAppBar(title: 'Настройки')],
+            SettingsScreen(
+              PageStorageKey('settings'),
             ),
           ]),
           NavigationAppBar(

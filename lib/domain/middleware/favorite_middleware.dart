@@ -1,4 +1,4 @@
-import 'package:clean_news_ai/domain/models/news_article.dart';
+import 'package:clean_news_ai/data/dto/article.dart';
 import 'package:clean_news_ai/domain/repository/domain_repository.dart';
 import 'package:clean_news_ai/domain/states/favorites_state.dart';
 import 'package:clean_news_ai/domain/states/top_news_state.dart';
@@ -9,33 +9,22 @@ import 'package:osam/util/event.dart';
 import '../event_enum.dart';
 
 class FavoriteMiddleware extends Middleware {
-  bool markAsFavorite(Event<BaseState> event) {
-    if (event.type == EventType.setNews) {
-      (event.bundle as Map<String, ArticleModel>)
-          .values
-          .forEach((model) => model..isSaved = DomainRepository().isFavorite(model.article));
-    }
-
-    return nextEvent(true);
-  }
-
   bool makeFavorite(Event<BaseState> event) {
     if (event.type == EventType.addFavorite) {
       final state = store.getState<TopNewsState>();
-      final model = state.news[event.bundle];
+      final article = state.news[event.bundle];
       store.dispatchEvent<FavoritesState>(
-          event: Event.modify(reducerCaller: (state, _) => state.addArticle(model)));
-      DomainRepository().addArticle(model.article);
+          event: Event.modify(reducerCaller: (state, _) => state.addArticle(article)));
+      DomainRepository().addArticle(article);
     }
     return nextEvent(true);
   }
 
   bool removeFavorite(Event<BaseState> event) {
     if (event.type == EventType.removeFavorite) {
-      final state = store.getState<TopNewsState>();
       store.dispatchEvent<FavoritesState>(
           event: Event.modify(reducerCaller: (state, _) => state.removeArticle(event.bundle)));
-      DomainRepository().removeArticle(state.news[event.bundle].article);
+      DomainRepository().removeArticle(event.bundle);
     }
     return nextEvent(true);
   }
@@ -45,14 +34,14 @@ class FavoriteMiddleware extends Middleware {
       final favoriteArticles = DomainRepository().getFavoriteArticles();
       store.dispatchEvent<FavoritesState>(
           event: Event.modify(
-              reducerCaller: (state, _) => state.addNews(Map<String, ArticleModel>.fromIterable(
+              reducerCaller: (state, _) => state.addNews(Map<String, Article>.fromIterable(
                   favoriteArticles,
-                  key: (model) => model.article.url,
-                  value: (model) => model..isSaved = true))));
+                  key: (article) => article.url,
+                  value: (article) => article))));
     }
     return nextEvent(true);
   }
 
   @override
-  List<Condition> get conditions => [markAsFavorite, makeFavorite, removeFavorite, fetchEvents];
+  List<Condition> get conditions => [makeFavorite, removeFavorite, fetchEvents];
 }

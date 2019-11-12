@@ -1,13 +1,13 @@
-import 'package:clean_news_ai/domain/models/news_article.dart';
+import 'package:clean_news_ai/data/dto/article.dart';
 import 'package:osam/domain/state/base_state.dart';
 
 // ignore: must_be_immutable
 class FavoritesState extends BaseState {
-  final news = <String, ArticleModel>{};
+  final news = <String, Article>{};
 
-  void addNews(Map<String, ArticleModel> news) => this.news.addAll(news);
+  void addNews(Map<String, Article> news) => this.news.addAll(news);
 
-  void addArticle(ArticleModel model) => this.news[model.article.url] = model;
+  void addArticle(Article article) => this.news[article.url] = article;
 
   void removeArticle(String key) => this.news.remove(key);
 

@@ -1,12 +1,12 @@
-import 'package:clean_news_ai/domain/models/news_article.dart';
+import 'package:clean_news_ai/data/dto/article.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'list_element/news_card.dart';
 
 class ArticleList extends StatelessWidget {
-  final Stream<List<ArticleModel>> stream;
-  final List<ArticleModel> initialData;
+  final Stream<List<Article>> stream;
+  final List<Article> initialData;
   const ArticleList({Key key, this.stream, this.initialData}) : super(key: key);
 
   @override
@@ -14,11 +14,10 @@ class ArticleList extends StatelessWidget {
     return StreamBuilder(
       initialData: initialData,
       stream: stream,
-      builder: (ctx, AsyncSnapshot<List<ArticleModel>> snapshot) {
+      builder: (ctx, AsyncSnapshot<List<Article>> snapshot) {
         return SliverList(
           delegate: SliverChildListDelegate(snapshot.data
-              .map((articleModel) =>
-                  NewsCard(key: ValueKey(articleModel.article.url), articleModel: articleModel))
+              .map((article) => NewsCard(key: ValueKey(article.url), article: article))
               .toList()),
         );
       },

@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:clean_news_ai/data/dto/article.dart';
 import 'package:clean_news_ai/domain/event_enum.dart';
-import 'package:clean_news_ai/domain/models/news_article.dart';
+import 'package:clean_news_ai/domain/states/favorites_state.dart';
 import 'package:clean_news_ai/domain/states/top_news_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +10,11 @@ import 'package:osam/osam.dart';
 import 'package:share/share.dart';
 
 class NewsCard extends StatefulWidget {
-  final ArticleModel articleModel;
+  final Article article;
 
   const NewsCard({
     Key key,
-    this.articleModel,
+    this.article,
   }) : super(key: key);
 
   @override
@@ -25,8 +25,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
   AnimationController controller;
   Animation animation;
 
-  Article get _article => widget.articleModel.article;
-  ArticleModel get _articleModel => widget.articleModel;
+  Article get _article => widget.article;
 
   initState() {
     super.initState();
@@ -44,6 +43,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.key);
     final store = StoreProvider.of(context);
     return AnimatedBuilder(
         animation: animation,
@@ -91,24 +91,33 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                                 Share.share(_article.url);
                               },
                             ),
-                            IconButton(
-                              icon: Icon(
-                                  (_articleModel?.isSaved ?? false)
-                                      ? CupertinoIcons.book_solid
-                                      : CupertinoIcons.book,
-                                  color: Colors.white),
-                              onPressed: () async {
-                                store.dispatchEvent<TopNewsState>(
-                                    event: Event.modify(
-                                        reducerCaller: _articleModel.isSaved
-                                            ? (state, _) => state.removeFavorite(_article.url)
-                                            : (state, _) => state.setFavorite(_article.url),
-                                        type: _articleModel.isSaved
-                                            ? EventType.removeFavorite
-                                            : EventType.addFavorite,
-                                        bundle: _article.url));
+                            StreamBuilder(
+                              initialData: StoreProvider.of(context)
+                                  .getState<FavoritesState>()
+                                  .news
+                                  .containsKey(_article.url),
+                              stream: StoreProvider.of(context)
+                                  .getState<FavoritesState>()
+                                  .propertyStream<Map<String, Article>>('news')
+                                  .map((news) => news.containsKey(_article.url)),
+                              builder: (ctx, AsyncSnapshot<bool> snapshot) {
+                                return IconButton(
+                                  icon: Icon(
+                                      snapshot.data
+                                          ? CupertinoIcons.book_solid
+                                          : CupertinoIcons.book,
+                                      color: Colors.white),
+                                  onPressed: () async {
+                                    store.dispatchEvent<TopNewsState>(
+                                        event: Event.sideEffect(
+                                            type: snapshot.data
+                                                ? EventType.removeFavorite
+                                                : EventType.addFavorite,
+                                            bundle: _article.url));
+                                  },
+                                );
                               },
-                            ),
+                            )
                           ],
                         )
                       ],
