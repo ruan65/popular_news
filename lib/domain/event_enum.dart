@@ -1,1 +1,1 @@
-enum EventType { fetchNews, addFavorite, removeFavorite, fetchFavorites }
+enum EventType { fetchNews, setNews, addFavorite, removeFavorite, fetchFavorites }

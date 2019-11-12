@@ -101,8 +101,8 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                                 store.dispatchEvent<TopNewsState>(
                                     event: Event.modify(
                                         reducerCaller: _articleModel.isSaved
-                                            ? (state) => state.removeFavorite(_article.url)
-                                            : (state) => state.setFavorite(_article.url),
+                                            ? (state, _) => state.removeFavorite(_article.url)
+                                            : (state, _) => state.setFavorite(_article.url),
                                         type: _articleModel.isSaved
                                             ? EventType.removeFavorite
                                             : EventType.addFavorite,
