@@ -1,7 +1,7 @@
 import 'package:clean_news_ai/ui/drawing/gradient.dart';
-import 'package:clean_news_ai/ui/screens/screens.dart';
+import 'package:clean_news_ai/ui/favorites/favorites_screen.dart';
+import 'package:clean_news_ai/ui/top_news/top_news_screen.dart';
 import 'package:clean_news_ai/ui/widgets/navigation_app_bar.dart';
-import 'package:clean_news_ai/ui/widgets/title_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,21 +24,22 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: ValueKey('rootScreen'),
       body: Stack(
+        key: ValueKey('rootStack'),
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          NewsGradient(),
+          NewsGradient(
+            key: ValueKey('backgroudGradient'),
+          ),
           TabBarView(controller: _controller, children: <Widget>[
             TopNewsScreen(PageStorageKey('news')),
-            CustomScrollView(
-              slivers: <Widget>[TitleAppBar(title: 'Поиск')],
-            ),
-            FavoritesNewsScreen(PageStorageKey('favorites')),
-            SettingsScreen(
-              PageStorageKey('settings'),
-            ),
+            FavoritesScreen(PageStorageKey('favorites')),
+            TopNewsScreen(PageStorageKey('news3')),
+            TopNewsScreen(PageStorageKey('news4'))
           ]),
           NavigationAppBar(
+            key: ValueKey('navBar'),
             controller: _controller,
           )
         ],

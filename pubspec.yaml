@@ -14,7 +14,7 @@ dependencies:
   cupertino_icons: 0.1.2
   worker_manager:
   equatable: ^0.6.1
-  osam: ^1.1.1
+  osam: ^2.0.0
   provider:
   path_provider:
   hive:

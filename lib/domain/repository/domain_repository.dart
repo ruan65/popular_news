@@ -6,11 +6,8 @@ import 'package:clean_news_ai/data/api/network_data_repository.dart';
 import 'package:clean_news_ai/data/database/database_repository.dart';
 import 'package:clean_news_ai/data/dto/answer.dart';
 import 'package:clean_news_ai/data/dto/article.dart';
-import 'package:worker_manager/task.dart';
 
 class DomainRepository {
-  Task<List<Article>> refreshingTask;
-
   List<Article> getFavoriteArticles() => DatabaseRepository.hive().getFavoriteArticles();
 
   void addArticle(Article article) => DatabaseRepository.hive().addArticle(article);
