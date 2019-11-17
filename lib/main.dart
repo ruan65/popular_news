@@ -16,15 +16,17 @@ import 'domain/states/app_state.dart';
 const isolatePoolSize = 2;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Hive.init((await getApplicationDocumentsDirectory()).path);
   Hive.registerAdapter(SourceAdapter(), 221);
   Hive.registerAdapter(ArticleAdapter(), 222);
   await DatabaseRepository.hive().init();
   await Executor(isolatePoolSize: isolatePoolSize).warmUp();
+  final store = Store(AppState(), middleWares: [NewsMiddleware(), FavoriteMiddleware()])
+    ..dispatchEvent(event: Event.sideEffect(type: EventType.fetchNews, bundle: 'science'));
   runApp(MaterialApp(
       home: StoreProvider(
-    store: Store(AppState(), middleWares: [NewsMiddleware(), FavoriteMiddleware()])
-      ..dispatchEvent(event: Event.sideEffect(type: EventType.fetchNews, bundle: 'science')),
+    store: store,
     child: BaseScreen(),
   )));
 }

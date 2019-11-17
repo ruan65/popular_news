@@ -1,9 +1,14 @@
+import 'package:clean_news_ai/domain/states/app_state.dart';
 import 'package:clean_news_ai/ui/drawing/gradient.dart';
 import 'package:clean_news_ai/ui/favorites/favorites_screen.dart';
+import 'package:clean_news_ai/ui/top_news/top_news_presenter.dart';
 import 'package:clean_news_ai/ui/top_news/top_news_screen.dart';
 import 'package:clean_news_ai/ui/widgets/navigation_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:osam/osam.dart';
+
+import '../favorites/favorites_presenter.dart';
 
 class BaseScreen extends StatefulWidget {
   BaseScreen({Key key}) : super(key: key);
@@ -18,28 +23,31 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 4, vsync: this);
+    _controller = TabController(length: 2, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: ValueKey('rootScreen'),
       body: Stack(
-        key: ValueKey('rootStack'),
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          NewsGradient(
-            key: ValueKey('backgroudGradient'),
-          ),
+          NewsGradient(),
           TabBarView(controller: _controller, children: <Widget>[
-            TopNewsScreen(PageStorageKey('news')),
-            FavoritesScreen(PageStorageKey('favorites')),
-            TopNewsScreen(PageStorageKey('news3')),
-            TopNewsScreen(PageStorageKey('news4'))
+            PresenterProvider<Store<AppState>, TopNewsPresenter>(
+              child: TopNewsScreen(PageStorageKey('news')),
+              presenter: TopNewsPresenter(),
+            ),
+            //TopNewsScreen(PageStorageKey('news3')),
+            PresenterProvider<Store<AppState>, FavoritesPresenter>(
+              child: FavoritesScreen(
+                PageStorageKey('favorites'),
+              ),
+              presenter: FavoritesPresenter(),
+            ),
+            //  TopNewsScreen(PageStorageKey('news4'))
           ]),
           NavigationAppBar(
-            key: ValueKey('navBar'),
             controller: _controller,
           )
         ],
