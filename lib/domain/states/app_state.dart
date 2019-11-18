@@ -1,4 +1,5 @@
 import 'package:clean_news_ai/domain/states/favorites_state.dart';
+import 'package:clean_news_ai/domain/states/navigation_state.dart';
 import 'package:clean_news_ai/domain/states/search_news_state.dart';
 import 'package:clean_news_ai/domain/states/settings_state.dart';
 import 'package:clean_news_ai/domain/states/top_news_state.dart';
@@ -10,7 +11,9 @@ class AppState extends BaseState<AppState> {
   final favoritesState = FavoritesState();
   final searchState = SearchState();
   final settingsState = SettingsState();
+  final navigationState = NavigationState();
 
   @override
-  List<Object> get props => [topNewsState, favoritesState, searchState, settingsState];
+  List<Object> get props =>
+      [topNewsState, favoritesState, searchState, settingsState, navigationState];
 }

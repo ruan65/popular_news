@@ -1,5 +1,6 @@
 import 'package:clean_news_ai/domain/event_enum.dart';
 import 'package:clean_news_ai/ui/screens/base_screen.dart';
+import 'package:clean_news_ai/ui/ui_elements/bottom_navigation/navigation_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:osam/osam.dart';
@@ -26,7 +27,11 @@ void main() async {
     ..dispatchEvent(event: Event.sideEffect(type: EventType.fetchNews, bundle: 'science'));
   runApp(MaterialApp(
       home: StoreProvider(
-    store: store,
-    child: BaseScreen(),
-  )));
+          key: ValueKey('Store'),
+          store: store,
+          child: PresenterProvider<Store<AppState>, NavigationPresenter>(
+            presenter: NavigationPresenter(),
+            key: ValueKey('navigation'),
+            child: BaseScreen(),
+          ))));
 }
