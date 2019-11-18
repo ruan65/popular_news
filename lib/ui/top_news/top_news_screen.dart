@@ -26,21 +26,15 @@ class TopNewsScreen extends StatelessWidget {
           },
         ),
         StreamBuilder(
-          key: ValueKey('topBuiilder'),
           stream: stream,
           initialData: initialData,
           builder: (ctx, AsyncSnapshot<List<Article>> snapshot) {
             return SliverList(
-              key: ValueKey('topList'),
-              delegate: SliverChildListDelegate(snapshot.data
-                  .map((article) => PresenterProvider<Store<AppState>, NewsCardPresenter>(
-                      key: ValueKey(article.url + 'top'),
-                      presenter: NewsCardPresenter(article.url),
-                      child: NewsCard(
-                        article: article,
-                        key: ValueKey(article.url + 'top1'),
-                      )))
-                  .toList()),
+              delegate: SliverChildListDelegate(snapshot.data.map((article) {
+                final presenter = NewsCardPresenter(article);
+                return PresenterProvider<Store<AppState>, NewsCardPresenter>(
+                    key: ValueKey(article.url), presenter: presenter, child: NewsCard());
+              }).toList()),
             );
           },
         )

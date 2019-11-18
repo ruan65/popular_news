@@ -40,9 +40,7 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
             ),
             //TopNewsScreen(PageStorageKey('news3')),
             PresenterProvider<Store<AppState>, FavoritesPresenter>(
-              child: FavoritesScreen(
-                PageStorageKey('favorites'),
-              ),
+              child: FavoritesScreen(PageStorageKey('favorites')),
               presenter: FavoritesPresenter(),
             ),
             //  TopNewsScreen(PageStorageKey('news4'))

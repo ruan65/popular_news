@@ -26,21 +26,15 @@ class FavoritesScreen extends StatelessWidget {
           },
         ),
         StreamBuilder(
-          key: ValueKey('favBuilder'),
           stream: stream,
           initialData: initialData,
           builder: (ctx, AsyncSnapshot<List<Article>> snapshot) {
-            print('stream builder values is ' + snapshot.data.length.toString());
             return SliverList(
-              key: ValueKey('favList'),
               delegate: SliverChildListDelegate(snapshot.data
                   .map((article) => PresenterProvider<Store<AppState>, NewsCardPresenter>(
-                      key: ValueKey(article.url + 'fav'),
-                      presenter: NewsCardPresenter(article.url),
-                      child: NewsCard(
-                        article: article,
-                        key: ValueKey(article.url + 'fav1'),
-                      )))
+                      key: ValueKey(article.url),
+                      presenter: NewsCardPresenter(article),
+                      child: NewsCard()))
                   .toList()),
             );
           },
