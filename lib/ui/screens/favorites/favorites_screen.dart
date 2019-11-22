@@ -1,5 +1,5 @@
 import 'package:clean_news_ai/data/dto/article.dart';
-import 'package:clean_news_ai/domain/states/app_state.dart';
+import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:clean_news_ai/ui/ui_elements/list_element/news_card.dart';
 import 'package:clean_news_ai/ui/ui_elements/list_element/news_card_presenter.dart';
 import 'package:clean_news_ai/ui/widgets/title_app_bar.dart';
@@ -24,6 +24,9 @@ class FavoritesScreen extends StatelessWidget {
           onRefresh: () {
             return Future.delayed(const Duration(seconds: 2), () {});
           },
+        ),
+        SliverPadding(
+          padding: EdgeInsets.only(top: 8),
         ),
         StreamBuilder(
           stream: stream,

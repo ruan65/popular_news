@@ -1,31 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'source.dart';
+part of 'favorites_state.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SourceAdapter extends TypeAdapter<Source> {
+class FavoritesStateAdapter extends TypeAdapter<FavoritesState> {
   @override
-  Source read(BinaryReader reader) {
+  FavoritesState read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Source(
-      id: fields[0] as String,
-      name: fields[1] as String,
-    );
+    return FavoritesState()
+      ..news = (fields[0] as Map)?.cast<String, Article>()
+      ..refreshHashcode();
   }
 
   @override
-  void write(BinaryWriter writer, Source obj) {
+  void write(BinaryWriter writer, FavoritesState obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.name);
+      ..writeByte(0)
+      ..write(obj.news);
   }
 }

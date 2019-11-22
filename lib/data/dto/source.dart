@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
+part 'source.g.dart';
+
 @HiveType()
 class Source {
   @HiveField(0)

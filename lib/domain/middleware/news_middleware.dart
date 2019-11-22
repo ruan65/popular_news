@@ -1,11 +1,11 @@
 import 'package:clean_news_ai/data/dto/article.dart';
 import 'package:clean_news_ai/domain/repository/domain_repository.dart';
-import 'package:clean_news_ai/domain/states/app_state.dart';
+import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:osam/domain/middleware/middleware.dart';
 import 'package:osam/domain/state/base_state.dart';
 import 'package:osam/domain/store/store.dart';
+import 'package:osam/osam.dart';
 import 'package:osam/util/comparable_wrapper.dart';
-import 'package:osam/util/event.dart';
 import 'package:worker_manager/executor.dart';
 import 'package:worker_manager/task.dart';
 

@@ -1,9 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-import 'package:clean_news_ai/data/dto/article.dart';
-import 'package:hive/hive.dart';
+part of 'article.dart';
 
-import 'source.dart';
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************

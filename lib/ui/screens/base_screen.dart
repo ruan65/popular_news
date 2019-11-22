@@ -1,8 +1,9 @@
-import 'package:clean_news_ai/domain/states/app_state.dart';
+import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:clean_news_ai/ui/drawing/gradient.dart';
 import 'package:clean_news_ai/ui/screens/top_news/top_news_presenter.dart';
 import 'package:clean_news_ai/ui/screens/top_news/top_news_screen.dart';
-import 'package:clean_news_ai/ui/widgets/navigation_app_bar.dart';
+import 'package:clean_news_ai/ui/ui_elements/bottom_navigation/navigation_app_bar.dart';
+import 'package:clean_news_ai/ui/ui_elements/bottom_navigation/navigation_presenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:osam/osam.dart';
@@ -45,8 +46,12 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
               presenter: FavoritesPresenter(),
             ),
           ]),
-          NavigationAppBar(
-            controller: _controller,
+          PresenterProvider<Store<AppState>, NavigationPresenter>(
+            key: ValueKey('navigation'),
+            presenter: NavigationPresenter(),
+            child: NavigationAppBar(
+              controller: _controller,
+            ),
           )
         ],
       ),

@@ -1,31 +1,31 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'source.dart';
+part of 'top_news_state.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SourceAdapter extends TypeAdapter<Source> {
+class TopNewsStateAdapter extends TypeAdapter<TopNewsState> {
   @override
-  Source read(BinaryReader reader) {
+  TopNewsState read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Source(
-      id: fields[0] as String,
-      name: fields[1] as String,
-    );
+    return TopNewsState()
+      ..news = (fields[0] as Map)?.cast<String, Article>()
+      ..scrollPosition = fields[1] as double
+      ..refreshHashcode();
   }
 
   @override
-  void write(BinaryWriter writer, Source obj) {
+  void write(BinaryWriter writer, TopNewsState obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.id)
+      ..write(obj.news)
       ..writeByte(1)
-      ..write(obj.name);
+      ..write(obj.scrollPosition);
   }
 }

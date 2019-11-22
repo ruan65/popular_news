@@ -10,6 +10,6 @@ Spreading calculation pressure between isolates:
 
 https://pub.dev/packages/worker_manager
 
-State managment:
+State management:
 
 https://pub.dev/packages/osam

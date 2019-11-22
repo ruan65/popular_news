@@ -16,33 +16,43 @@ class NavigationAppBar extends StatelessWidget {
     return ClipRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-        child: TabBar(
-          indicator: BoxDecoration(
-            color: Colors.transparent,
-          ),
-          controller: controller,
-          tabs: <Widget>[
-            GestureDetector(
-              onTap: () {
-                presenter.routeTo(0);
-              },
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                color: Colors.red,
-                child: Icon(CupertinoIcons.time),
-              ),
-            ), // Icon(CupertinoIcons.search),
-            GestureDetector(
-                onTap: () {
-                  presenter.routeTo(1);
-                },
-                child: Container(
-                  color: Colors.blue,
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(CupertinoIcons.book),
-                )), //  Icon(CupertinoIcons.gear),
-          ],
-        ),
+        child: StreamBuilder(
+            stream: presenter.stream,
+            initialData: presenter.initialData,
+            builder: (context, AsyncSnapshot<int> snapshot) {
+              Future.delayed(Duration.zero, () {
+                controller.animateTo(snapshot.data);
+              });
+              return TabBar(
+                indicator: BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                controller: controller,
+                tabs: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      presenter.routeTo(0);
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(CupertinoIcons.time),
+                    ),
+                  ),
+                  // Icon(CupertinoIcons.search),
+                  GestureDetector(
+                      onTap: () {
+                        presenter.routeTo(1);
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(CupertinoIcons.book),
+                      )),
+                  //  Icon(CupertinoIcons.gear),
+                ],
+              );
+            }),
       ),
     );
   }

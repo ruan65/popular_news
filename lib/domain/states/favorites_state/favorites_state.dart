@@ -1,9 +1,14 @@
 import 'package:clean_news_ai/data/dto/article.dart';
+import 'package:hive/hive.dart';
 import 'package:osam/domain/state/base_state.dart';
 
+part 'favorites_state.g.dart';
+
+@HiveType()
 // ignore: must_be_immutable
 class FavoritesState extends BaseState<FavoritesState> {
-  final news = <String, Article>{};
+  @HiveField(0)
+  var news = <String, Article>{};
 
   void addNews(Map<String, Article> news) => this.news.addAll(news);
 
