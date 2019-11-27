@@ -7,10 +7,13 @@ part 'settings_state.g.dart';
 // ignore: must_be_immutable
 class SettingsState extends BaseState<SettingsState> {
   @HiveField(0)
-  String theme = 'science';
+  var themes = <String>{};
 
-  void changeTheme(String theme) => this.theme = theme;
+  void changeThemes(Set<String> themes) {
+    this.themes.clear();
+    this.themes.addAll(themes);
+  }
 
   @override
-  List<Object> get props => [theme];
+  List<Object> get props => [themes];
 }

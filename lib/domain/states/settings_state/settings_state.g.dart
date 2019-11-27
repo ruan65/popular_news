@@ -14,7 +14,7 @@ class SettingsStateAdapter extends TypeAdapter<SettingsState> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return SettingsState()
-      ..theme = fields[0] as String
+      ..themes = (fields[0] as Set)?.cast<String>()
       ..refreshHashcode();
   }
 
@@ -23,6 +23,6 @@ class SettingsStateAdapter extends TypeAdapter<SettingsState> {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.theme);
+      ..write(obj.themes?.toList());
   }
 }

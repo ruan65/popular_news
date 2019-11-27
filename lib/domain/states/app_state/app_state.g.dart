@@ -17,18 +17,21 @@ class AppStateAdapter extends TypeAdapter<AppState> {
       ..topNewsState = fields[0] as TopNewsState
       ..navigationState = fields[1] as NavigationState
       ..favoritesState = fields[2] as FavoritesState
+      ..settingsState = fields[3] as SettingsState
       ..refreshHashcode();
   }
 
   @override
   void write(BinaryWriter writer, AppState obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.topNewsState)
       ..writeByte(1)
       ..write(obj.navigationState)
       ..writeByte(2)
-      ..write(obj.favoritesState);
+      ..write(obj.favoritesState)
+      ..writeByte(3)
+      ..write(obj.settingsState);
   }
 }

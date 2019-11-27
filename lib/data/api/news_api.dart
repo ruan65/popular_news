@@ -18,7 +18,7 @@ class _NewsApi implements API {
   Future<String> getTopArticles({String category}) async {
     try {
       final response = await get(
-          "https://newsapi.org/v2/top-headlines?country=ru&category=$category&pageSize=10&apiKey"
+          "https://newsapi.org/v2/top-headlines?country=ru&category=$category&pageSize=3&apiKey"
           "=$apiKey");
       final jsonData = response.body;
       return jsonData;
@@ -31,7 +31,7 @@ class _NewsApi implements API {
   Future<String> searchArticles({String keyWord}) async {
     try {
       final response =
-          await get("https://newsapi.org/v2/everything?q=$keyWord&pageSize=100&sortBy=relevance"
+          await get("https://newsapi.org/v2/everything?q=$keyWord&pageSize=3&sortBy=relevance"
               "&language=ru&apiKey=$apiKey");
       final jsonData = response.body;
       return jsonData;

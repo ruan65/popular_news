@@ -8,14 +8,15 @@ import 'package:osam/presentation/presenter.dart';
 
 class TopNewsPresenter<S extends Store<AppState>> extends Presenter<S> {
   StreamSubscription<List<Article>> newsSub;
-  Stream<List<Article>> get stream => _broadcaster.stream;
-  final _broadcaster = StreamController<List<Article>>.broadcast();
+  StreamController<List<Article>> _broadcaster;
 
+  Stream<List<Article>> get stream => _broadcaster.stream;
   List<Article> get initialData => store.state.topNewsState.news.values.toList();
   double get initialScrollPosition => store.state.topNewsState.scrollPosition;
 
   @override
   void init() {
+    _broadcaster = StreamController<List<Article>>.broadcast();
     newsSub = store.state.topNewsState
         .propertyStream<List<Article>>((state) => state.news.values.toList())
         .listen((data) {

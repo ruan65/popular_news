@@ -14,9 +14,7 @@ class FavoritesState extends BaseState<FavoritesState> {
 
   void addArticle(Article article) => this.news[article.url] = article;
 
-  void removeArticle(String key) {
-    this.news.remove(key);
-  }
+  void removeArticle(String key) => this.news.remove(key);
 
   @override
   List<Object> get props => [news];

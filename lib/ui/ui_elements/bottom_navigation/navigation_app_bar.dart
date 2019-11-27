@@ -49,7 +49,15 @@ class NavigationAppBar extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Icon(CupertinoIcons.book),
                       )),
-                  //  Icon(CupertinoIcons.gear),
+                  GestureDetector(
+                      onTap: () {
+                        presenter.routeTo(2);
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(CupertinoIcons.settings),
+                      )),
                 ],
               );
             }),

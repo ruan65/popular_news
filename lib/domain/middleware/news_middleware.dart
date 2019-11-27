@@ -11,8 +11,8 @@ import 'package:worker_manager/task.dart';
 
 import '../event_enum.dart';
 
-class NewsMiddleware<S extends Store<AppState>> extends Middleware<S> {
-  Task<List<Article>> refreshingTask;
+class NewsMiddleware extends Middleware<Store<AppState>> {
+  List<Task<List<Article>>> refreshingTasks = [];
 
   bool getTopNews(Event<BaseState> event) {
     void _fetchEvents(List<Article> models) {
@@ -27,9 +27,19 @@ class NewsMiddleware<S extends Store<AppState>> extends Middleware<S> {
     }
 
     if (event.type == EventType.fetchNews) {
-      if (refreshingTask != null) Executor().removeTask(task: refreshingTask);
-      refreshingTask = Task(function: DomainRepository.getTopArticles, bundle: event.bundle);
-      Executor().addTask<List<Article>>(task: refreshingTask).listen(_fetchEvents);
+      if (refreshingTasks.isNotEmpty) {
+        refreshingTasks.forEach((task) {
+          Executor().removeTask(task: task);
+        });
+        refreshingTasks.clear();
+      }
+      final tasks = (event.bundle as Set<String>)
+          .map((theme) =>
+              Task<List<Article>>(function: DomainRepository.getTopArticles, bundle: theme))
+          .toList();
+      tasks.forEach((task) {
+        Executor().addTask<List<Article>>(task: task).listen(_fetchEvents);
+      });
     }
     return nextEvent(true);
   }
