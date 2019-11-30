@@ -35,7 +35,7 @@ void main() async {
   await Executor(isolatePoolSize: isolatePoolSize).warmUp();
   await registerAdapters();
   final store = Store(AppState(), middleWares: <Middleware<Store<AppState>>>[NewsMiddleware()]);
-  await store.initPersist();
+  //await store.initPersist();
   //store.wipePersist();
   final themes = store.state.settingsState.themes;
   final initialIndex = store.state.navigationState.navigationIndex;

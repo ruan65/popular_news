@@ -14,7 +14,8 @@ class TopNewsStateAdapter extends TypeAdapter<TopNewsState> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TopNewsState()
-      ..news = (fields[0] as Map)?.cast<String, Article>()
+      ..news = (fields[0] as Map)?.map((dynamic k, dynamic v) =>
+          MapEntry(k as String, (v as Map)?.cast<String, Article>()))
       ..scrollPosition = fields[1] as double
       ..refreshHashcode();
   }

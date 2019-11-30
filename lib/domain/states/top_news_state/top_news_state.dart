@@ -8,12 +8,12 @@ part 'top_news_state.g.dart';
 // ignore: must_be_immutable
 class TopNewsState extends BaseState<TopNewsState> {
   @HiveField(0)
-  var news = <String, Article>{};
+  var news = <String, Map<String, Article>>{};
 
   @HiveField(1)
   var scrollPosition = 0.0;
 
-  void addNews(Map<String, Article> news) => this.news.addAll(news);
+  void addNews({String theme, Map<String, Article> news}) => this.news[theme] = news;
 
   void updateScrollPosition(double value) => scrollPosition = value;
 

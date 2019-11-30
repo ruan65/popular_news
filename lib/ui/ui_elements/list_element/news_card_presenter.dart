@@ -4,7 +4,7 @@ import 'package:clean_news_ai/data/dto/article.dart';
 import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:osam/osam.dart';
 
-class NewsCardPresenter<S extends Store<AppState>> extends Presenter<S> {
+class NewsCardPresenter extends Presenter<Store<AppState>> {
   final Article article;
 
   StreamSubscription<Map<String, Article>> savedSub;
@@ -26,8 +26,8 @@ class NewsCardPresenter<S extends Store<AppState>> extends Presenter<S> {
 
   void addToFavorites() {
     final currentModel = store.state.topNewsState.news[article.url];
-    store.dispatchEvent(
-        event: Event.modify(reducer: (state, _) => state.favoritesState..addArticle(currentModel)));
+//    store.dispatchEvent(
+//        event: Event.modify(reducer: (state, _) => state.favoritesState..addArticle(currentModel)));
   }
 
   void removeFromFavorites() {
