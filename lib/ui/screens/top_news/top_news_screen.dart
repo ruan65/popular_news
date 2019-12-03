@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:clean_news_ai/data/dto/article.dart';
 import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:clean_news_ai/ui/screens/top_news/top_news_presenter.dart';
 import 'package:clean_news_ai/ui/ui_elements/list_element/news_card.dart';
@@ -11,46 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:osam/osam.dart';
 
-class TopNewsScreen extends StatefulWidget {
-  TopNewsScreen(Key key) : super(key: key);
-
-  @override
-  _TopNewsScreenState createState() => _TopNewsScreenState();
-}
-
-class _TopNewsScreenState extends State<TopNewsScreen> {
+class TopNewsScreen extends StatelessWidget {
+  TopNewsScreen(key) : super(key: key);
   final scrollController = ScrollController();
-
-  final listWithSlivers = <SliverStickyHeader>[];
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      final presenter = PresenterProvider.of<TopNewsPresenter>(context);
-      presenter.stream.listen((data) {
-        setState(() {
-          listWithSlivers.clear();
-          listWithSlivers.addAll(data.keys
-              .map((key) => SliverStickyHeader(
-                    header: NewsStickyHeader(
-                      title: key[0].toUpperCase() + key.substring(1, key.length),
-                    ),
-                    sliver: SliverAnimatedList(
-                      initialItemCount: data[key].values.length,
-                      itemBuilder: (ctx, index, animation) {
-                        return PresenterProvider<Store<AppState>, NewsCardPresenter>(
-                            key: ValueKey(data[key].values.toList()[index].url),
-                            presenter: NewsCardPresenter(data[key].values.toList()[index]),
-                            child: NewsCard());
-                      },
-                    ),
-                  ))
-              .toList());
-        });
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +30,6 @@ class _TopNewsScreenState extends State<TopNewsScreen> {
                 presenter.updateScrollPosition(scrollController.offset);
               }),
             physics: BouncingScrollPhysics(),
-            key: widget.key,
             slivers: <Widget>[
               TitleAppBar(title: 'News'),
               CupertinoSliverRefreshControl(
@@ -77,9 +39,33 @@ class _TopNewsScreenState extends State<TopNewsScreen> {
                 },
               ),
               SliverPadding(
-                padding: EdgeInsets.only(top: 8),
+                padding: EdgeInsets.only(top: 20),
               ),
-              ...listWithSlivers
+              ...presenter.initialData.keys
+                  .map((theme) => StreamBuilder(
+                        initialData: presenter.initialData[theme],
+                        stream: presenter.stream.map((news) => news[theme]),
+                        builder: (ctx, AsyncSnapshot<Map<String, Article>> snapshot) => snapshot.data.isNotEmpty
+                            ? SliverStickyHeader(
+                                header: NewsStickyHeader(title: theme),
+                                sliver: SliverList(
+                                  delegate: SliverChildListDelegate(snapshot.data.keys
+                                      .map((key) => PresenterProvider<Store<AppState>, NewsCardPresenter>(
+                                            key: ValueKey(key),
+                                            presenter: NewsCardPresenter(snapshot.data[key]),
+                                            child: NewsCard(),
+                                          ))
+                                      .toList()),
+                                ),
+                              )
+                            : SliverToBoxAdapter(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[NewsStickyHeader(title: theme), CircularProgressIndicator()],
+                                ),
+                              ),
+                      ))
+                  .toList()
             ],
           );
         });
@@ -94,7 +80,8 @@ Widget buildSimpleRefreshIndicator(
   double refreshIndicatorExtent,
 ) {
   const Curve opacityCurve = Interval(0.4, 0.8, curve: Curves.easeInOut);
-  return Align(
+  return Container(
+    padding: EdgeInsets.only(top: 8),
     alignment: Alignment.bottomCenter,
     child: Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -103,7 +90,7 @@ Widget buildSimpleRefreshIndicator(
               opacity: opacityCurve.transform(min(pulledExtent / refreshTriggerPullDistance, 1.0)),
               child: Icon(
                 CupertinoIcons.down_arrow,
-                color: CupertinoDynamicColor.resolve(CupertinoColors.white, context),
+                color: CupertinoColors.white,
                 size: 36.0,
               ),
             )

@@ -14,16 +14,10 @@ class NewsStickyHeader extends StatelessWidget {
         child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Text(
-                title,
-                style: TextStyle(
-                  fontFamily: '.SF Pro Display',
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.41,
-                  color: Colors.white,
-                ),
+                title.substring(0, 1).toUpperCase() + title.substring(1, title.length),
+                style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             )));
   }

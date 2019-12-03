@@ -42,11 +42,11 @@ class Article {
     final lastNumber = hoursNumber % 10;
     String time;
     if (lastNumber < 2) {
-      time = hoursNumber.toString() + ' час назад';
+      time = hoursNumber.toString() + ' hours ago';
     } else if (lastNumber < 5) {
-      time = hoursNumber.toString() + ' часa назад';
+      time = hoursNumber.toString() + ' hours ago';
     } else {
-      time = hoursNumber.toString() + ' часов назад';
+      time = hoursNumber.toString() + ' hours ago';
     }
     return Article(
       source: Source.fromMap(map['source']),

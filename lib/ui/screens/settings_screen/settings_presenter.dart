@@ -7,15 +7,22 @@ import 'package:osam/presentation/presenter.dart';
 class SettingsPresenter extends Presenter<Store<AppState>> {
   final selectedThemes = <String>{};
 
+  void change() {
+    store.dispatchEvent(
+        event: Event.modify(
+            reducer: (state, _) =>
+            state.topNewsState..clearAndAddNewThemes(selectedThemes)));
+  }
+
   @override
   void dispose() {
     store.dispatchEvent(
-        event: Event.modify(reducer: (state, _) => state.topNewsState..cleanNews()));
-    store.dispatchEvent(
         event: Event.modify(
             bundle: selectedThemes,
-            reducer: (state, bundle) => state.settingsState..changeThemes(bundle),
+            reducer: (state, bundle) =>
+                state.settingsState..changeThemes(bundle),
             type: EventType.fetchNews));
+
   }
 
   @override

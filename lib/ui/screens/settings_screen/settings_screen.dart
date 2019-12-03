@@ -42,7 +42,10 @@ class SettingsScreen extends StatelessWidget {
               children: themes
                   .map((theme) => ActionChip(
                         label: Text(theme),
-                        onPressed: () => presenter.selectedThemes.add(theme),
+                        onPressed: () {
+                          presenter.selectedThemes.add(theme);
+                          presenter.change();
+                        },
                       ))
                   .toList(),
             ),
@@ -67,4 +70,11 @@ const colors = [
   Colors.yellow,
 ];
 
-const themes = {'business', 'entertainment', 'health', 'science', 'sports', 'technology'};
+const themes = {
+  'business',
+  'entertainment',
+  'health',
+  'science',
+  'sports',
+  'technology'
+};

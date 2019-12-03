@@ -6,7 +6,7 @@ import 'package:osam/domain/event/event.dart';
 import 'package:osam/domain/store/store.dart';
 import 'package:osam/presentation/presenter.dart';
 
-class TopNewsPresenter<S extends Store<AppState>> extends Presenter<S> {
+class TopNewsPresenter extends Presenter<Store<AppState>> {
   StreamSubscription<Map<String, Map<String, Article>>> newsSub;
   StreamController<Map<String, Map<String, Article>>> _broadcaster;
 

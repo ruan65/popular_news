@@ -39,7 +39,6 @@ void main() async {
   //store.wipePersist();
   final themes = store.state.settingsState.themes;
   final initialIndex = store.state.navigationState.navigationIndex;
-  store.dispatchEvent(event: Event.sideEffect(type: EventType.fetchNews, bundle: themes));
   runApp(MaterialApp(
       home: StoreProvider(
           key: ValueKey('Store'),

@@ -13,8 +13,9 @@ dependencies:
     sdk: flutter
   cupertino_icons: 0.1.2
   worker_manager: ^2.0.8
-  osam: ^2.3.6
+  osam: ^2.3.7
   flutter_sticky_header: ^0.4.0
+  sliver_animated_list: ^1.0.0+2
   path_provider:
   hive:
   hive_flutter:

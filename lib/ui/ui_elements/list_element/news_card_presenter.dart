@@ -13,27 +13,22 @@ class NewsCardPresenter extends Presenter<Store<AppState>> {
   NewsCardPresenter(this.article);
 
   bool get initialData => store.state.favoritesState.news.containsKey(article.url);
+
   Stream<bool> get stream => isSavedBroadcaster.stream;
 
   @override
   void init() {
-    savedSub = store.state.favoritesState
-        .propertyStream<Map<String, Article>>((state) => state.news)
-        .listen((savedNews) {
+    savedSub =
+        store.state.favoritesState.propertyStream<Map<String, Article>>((state) => state.news).listen((savedNews) {
       isSavedBroadcaster.sink.add(savedNews.containsKey(article.url) ? true : false);
     });
   }
 
-  void addToFavorites() {
-    final currentModel = store.state.topNewsState.news[article.url];
-//    store.dispatchEvent(
-//        event: Event.modify(reducer: (state, _) => state.favoritesState..addArticle(currentModel)));
-  }
+  void addToFavorites() =>
+      store.dispatchEvent(event: Event.modify(reducer: (state, _) => state.favoritesState..addArticle(article)));
 
   void removeFromFavorites() {
-    store.dispatchEvent(
-        event:
-            Event.modify(reducer: (state, _) => state.favoritesState..removeArticle(article.url)));
+    store.dispatchEvent(event: Event.modify(reducer: (state, _) => state.favoritesState..removeArticle(article.url)));
   }
 
   @override
