@@ -14,15 +14,12 @@ class NewsMiddleware extends Middleware<Store<AppState>> {
 
   bool getTopNews(Event event) {
     void _fetchEvents(String theme, List<Article> models) {
-      final mapOfModels =
-          Map<String, Article>.fromIterable(models, key: (item) => item.url, value: (item) => item);
+      final mapOfModels = Map<String, Article>.fromIterable(models, key: (item) => item.url, value: (item) => item);
       store.dispatchEvent(
-          event: Event.modify(
-            reducer: (state, _) => state.topNewsState..addNews(theme: theme, news: mapOfModels),
-          ));
+          event: Event.modify(reducer: (state, _) => state.topNewsState..addNews(theme: theme, news: mapOfModels)));
     }
 
-    if (event.type == EventType.fetchNews && event is Event<AppState, Set<String>>) {
+    if (event.type == EventType.fetchNews) {
       /// killing old tasks
       if (refreshingTasks.isNotEmpty) {
         refreshingTasks.forEach((task) {
@@ -32,9 +29,8 @@ class NewsMiddleware extends Middleware<Store<AppState>> {
       }
 
       ///creating tasks
-      final tasks = event.bundle
-          .map((theme) =>
-              Task<List<Article>>(function: DomainRepository.getTopArticles, bundle: theme))
+      final tasks = (event.bundle as Set<String>)
+          .map((theme) => Task<List<Article>>(function: DomainRepository.getTopArticles, bundle: theme))
           .toList();
       tasks.forEach((task) {
         Executor().addTask<List<Article>>(task: task).listen((news) {

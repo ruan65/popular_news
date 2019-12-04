@@ -8,7 +8,7 @@ class NewsCardPresenter extends Presenter<Store<AppState>> {
   final Article article;
 
   StreamSubscription<Map<String, Article>> savedSub;
-  final isSavedBroadcaster = StreamController<bool>.broadcast();
+  StreamController<bool> isSavedBroadcaster;
 
   NewsCardPresenter(this.article);
 
@@ -18,6 +18,7 @@ class NewsCardPresenter extends Presenter<Store<AppState>> {
 
   @override
   void init() {
+    isSavedBroadcaster = StreamController<bool>.broadcast();
     savedSub =
         store.state.favoritesState.propertyStream<Map<String, Article>>((state) => state.news).listen((savedNews) {
       isSavedBroadcaster.sink.add(savedNews.containsKey(article.url) ? true : false);

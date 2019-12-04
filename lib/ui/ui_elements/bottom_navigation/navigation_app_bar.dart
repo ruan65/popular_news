@@ -39,7 +39,6 @@ class NavigationAppBar extends StatelessWidget {
                       child: Icon(CupertinoIcons.time),
                     ),
                   ),
-                  // Icon(CupertinoIcons.search),
                   GestureDetector(
                       onTap: () {
                         presenter.routeTo(1);

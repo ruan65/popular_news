@@ -5,6 +5,7 @@ import 'package:clean_news_ai/ui/screens/settings_screen/settings_screen.dart';
 import 'package:clean_news_ai/ui/screens/top_news/top_news_presenter.dart';
 import 'package:clean_news_ai/ui/screens/top_news/top_news_screen.dart';
 import 'package:clean_news_ai/ui/ui_elements/bottom_navigation/navigation_app_bar.dart';
+import 'package:clean_news_ai/ui/ui_elements/bottom_navigation/navigation_presenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:osam/osam.dart';
@@ -30,6 +31,15 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = TabController(length: 3, vsync: this, initialIndex: initialIndex);
+    // ignore: invalid_use_of_protected_member
+    if(!_controller.hasListeners){
+      Future.delayed(Duration.zero, (){
+        _controller.addListener((){
+          final presenter = PresenterProvider.of<NavigationPresenter>(context);
+          presenter.routeTo(_controller.index);
+        });
+      });
+    }
   }
 
   @override

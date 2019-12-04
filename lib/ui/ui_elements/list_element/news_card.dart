@@ -1,15 +1,22 @@
 import 'dart:core';
 
+import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:osam/osam.dart';
 import 'package:share/share.dart';
+import 'package:sliver_animated_list/sliver_animated_list.dart';
 
 import 'news_card_presenter.dart';
 
 class NewsCard extends StatefulWidget {
+  final GlobalKey<SliverAnimatedListState> listKey;
+  final int index;
+
   const NewsCard({
     Key key,
+    this.listKey,
+    this.index,
   }) : super(key: key);
 
   @override
@@ -23,13 +30,10 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
     final article = presenter.article;
     return GestureDetector(
       onTap: () {
-        Navigator.of(context)
-            .push(CupertinoPageRoute(builder: (ctx) => Container())..createAnimationController());
+        Navigator.of(context).push(CupertinoPageRoute(builder: (ctx) => Container())..createAnimationController());
       },
       child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.white10)
-        ),
+        decoration: BoxDecoration(border: Border.all(color: Colors.white10)),
         alignment: Alignment.center,
         child: Column(
           children: [
@@ -38,9 +42,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
               alignment: Alignment.centerRight,
               child: Row(
                 children: [
-                  Expanded(
-                      child: Text(article.source.name,
-                          style: TextStyle(color: CupertinoColors.white))),
+                  Expanded(child: Text(article.source.name, style: TextStyle(color: CupertinoColors.white))),
                   Row(
                     children: [
                       IconButton(
@@ -54,13 +56,27 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                         stream: presenter.stream,
                         builder: (ctx, AsyncSnapshot<bool> snapshot) {
                           return IconButton(
-                            icon: Icon(
-                                snapshot.data ? CupertinoIcons.book_solid : CupertinoIcons.book,
+                            icon: Icon(snapshot.data ? CupertinoIcons.book_solid : CupertinoIcons.book,
                                 color: Colors.white),
                             onPressed: () async {
-                              snapshot.data
-                                  ? presenter.removeFromFavorites()
-                                  : presenter.addToFavorites();
+                              if (snapshot.data) {
+                                widget.listKey.currentState.removeItem(
+                                    widget.index,
+                                    (ctx, animation) => AbsorbPointer(
+                                          child: FadeTransition(
+                                            opacity: animation,
+                                            child: SizeTransition(
+                                              sizeFactor: animation,
+                                              child: PresenterProvider<Store<AppState>, NewsCardPresenter>(
+                                                key: ValueKey(this.widget.key),
+                                                presenter: NewsCardPresenter(presenter.article),
+                                                child: NewsCard(),
+                                              ),
+                                            ),
+                                          ),
+                                        ));
+                              }
+                              snapshot.data ? presenter.removeFromFavorites() : presenter.addToFavorites();
                             },
                           );
                         },
@@ -73,8 +89,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               alignment: Alignment.centerLeft,
-              child:
-                  Text(article.title, style: TextStyle(color: CupertinoColors.white, fontSize: 20)),
+              child: Text(article.title, style: TextStyle(color: CupertinoColors.white, fontSize: 20)),
             ),
             Container(
               padding: EdgeInsets.all(16.0),

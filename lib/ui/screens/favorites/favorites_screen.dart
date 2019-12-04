@@ -6,11 +6,19 @@ import 'package:clean_news_ai/ui/widgets/title_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:osam/osam.dart';
+import 'package:sliver_animated_list/sliver_animated_list.dart';
 
 import 'favorites_presenter.dart';
 
-class FavoritesScreen extends StatelessWidget {
+class FavoritesScreen extends StatefulWidget {
   FavoritesScreen(Key key) : super(key: key);
+
+  @override
+  _FavoritesScreenState createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +40,16 @@ class FavoritesScreen extends StatelessWidget {
           stream: stream,
           initialData: initialData,
           builder: (ctx, AsyncSnapshot<List<Article>> snapshot) {
-            return SliverList(
-              delegate: SliverChildListDelegate(snapshot.data
-                  .map((article) => PresenterProvider<Store<AppState>, NewsCardPresenter>(
-                      key: ValueKey(article.url),
-                      presenter: NewsCardPresenter(article),
-                      child: NewsCard()))
-                  .toList()),
+            return SliverAnimatedList(
+              key: _listKey,
+              initialItemCount: snapshot.data.length,
+              itemBuilder: (ctx, index, animation) {
+                return PresenterProvider<Store<AppState>, NewsCardPresenter>(
+                  key: ValueKey(snapshot.data[index]),
+                  presenter: NewsCardPresenter(snapshot.data[index]),
+                  child: NewsCard(listKey: _listKey, index: index),
+                );
+              },
             );
           },
         )
