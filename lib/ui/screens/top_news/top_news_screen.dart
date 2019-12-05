@@ -59,9 +59,9 @@ class TopNewsScreen extends StatelessWidget {
                                 ),
                               )
                             : SliverToBoxAdapter(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[NewsStickyHeader(title: theme), CircularProgressIndicator()],
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[NewsStickyHeader(title: theme), CupertinoActivityIndicator()],
                                 ),
                               ),
                       ))

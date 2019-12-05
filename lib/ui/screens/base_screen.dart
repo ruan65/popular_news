@@ -15,6 +15,7 @@ import 'favorites/favorites_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   final int initialIndex;
+
   BaseScreen({Key key, this.initialIndex}) : super(key: key);
 
   @override
@@ -32,9 +33,9 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
     super.initState();
     _controller = TabController(length: 3, vsync: this, initialIndex: initialIndex);
     // ignore: invalid_use_of_protected_member
-    if(!_controller.hasListeners){
-      Future.delayed(Duration.zero, (){
-        _controller.addListener((){
+    if (!_controller.hasListeners) {
+      Future.delayed(Duration.zero, () {
+        _controller.addListener(() {
           final presenter = PresenterProvider.of<NavigationPresenter>(context);
           presenter.routeTo(_controller.index);
         });
@@ -49,23 +50,27 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
         alignment: Alignment.bottomCenter,
         children: <Widget>[
           NewsGradient(),
-          TabBarView(controller: _controller, children: <Widget>[
-            PresenterProvider<Store<AppState>, TopNewsPresenter>(
-              key: ValueKey('topNewsPresenter'),
-              child: TopNewsScreen(PageStorageKey('news')),
-              presenter: TopNewsPresenter(),
-            ),
-            PresenterProvider<Store<AppState>, FavoritesPresenter>(
-              key: ValueKey('favoritesPresenter'),
-              child: FavoritesScreen(PageStorageKey('favorites')),
-              presenter: FavoritesPresenter(),
-            ),
-            PresenterProvider<Store<AppState>, SettingsPresenter>(
-              key: ValueKey('settingsPresenter'),
-              child: SettingsScreen(PageStorageKey('settings')),
-              presenter: SettingsPresenter(),
-            ),
-          ]),
+          TabBarView(
+            controller: _controller,
+            children: <Widget>[
+              PresenterProvider<Store<AppState>, TopNewsPresenter>(
+                key: ValueKey('topNewsPresenter'),
+                child: TopNewsScreen(PageStorageKey('news')),
+                presenter: TopNewsPresenter(),
+              ),
+              PresenterProvider<Store<AppState>, FavoritesPresenter>(
+                key: ValueKey('favoritesPresenter'),
+                child: FavoritesScreen(PageStorageKey('favorites')),
+                presenter: FavoritesPresenter(),
+              ),
+              PresenterProvider<Store<AppState>, SettingsPresenter>(
+                key: ValueKey('settingsPresenter'),
+                child: SettingsScreen(PageStorageKey('settings')),
+                presenter: SettingsPresenter(),
+              ),
+            ],
+            physics: AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+          ),
           NavigationAppBar(
             controller: _controller,
           ),

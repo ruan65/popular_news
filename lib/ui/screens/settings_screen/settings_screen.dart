@@ -10,51 +10,55 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final presenter = PresenterProvider.of<SettingsPresenter>(context);
-
     return CustomScrollView(
       physics: BouncingScrollPhysics(),
       slivers: <Widget>[
-        TitleAppBar(title: 'Настройки'),
+        TitleAppBar(title: 'Settings'),
         SliverPadding(
           padding: EdgeInsets.only(top: 8),
         ),
         SliverFillRemaining(
           child: Column(children: [
-            Wrap(
-              children: colors
-                  .map((color) => ActionChip(
-                        backgroundColor: color,
-                        shadowColor: color,
-                        label: Container(
-                          width: 10,
-                          color: color,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        onPressed: () {
-                          //    presenter.changeColor(color);
-                        },
-                      ))
-                  .toList(),
-            ),
-            Wrap(
-              children: themes
-                  .map((theme) => ActionChip(
-                        label: Text(theme),
-                        onPressed: () {
-                          presenter.selectedThemes.add(theme);
-                          presenter.change();
-                        },
-                      ))
-                  .toList(),
-            ),
-            RaisedButton(
-              child: Text('clear'),
-              onPressed: () {
-                presenter.selectedThemes.clear();
-              },
+            StreamBuilder(
+              initialData: presenter.initialData,
+              stream: presenter.themesStream,
+              builder: (ctx, AsyncSnapshot<Set<String>> snapshot) => Wrap(
+                children: themes.map((theme) {
+                  final isSelected = snapshot.data.contains(theme);
+                  return ActionChip(
+                    backgroundColor: isSelected ? Colors.blue : Colors.white,
+                    elevation: isSelected ? 1 : 3,
+                    label: Text(
+                      theme,
+                      style: TextStyle(color: isSelected ? Colors.white : Colors.blue),
+                    ),
+                    onPressed: () {
+                      isSelected ? presenter.removeTheme(theme) : presenter.addTheme(theme);
+                    },
+                  );
+                }).toList(),
+              ),
             )
+
+//            Wrap(
+//              children: colors
+//                  .map((color) => ActionChip(
+//                        backgroundColor: color,
+//                        shadowColor: color,
+//                        label: Container(
+//                          width: 10,
+//                          color: color,
+//                        ),
+//                        shape: RoundedRectangleBorder(
+//                          borderRadius: BorderRadius.circular(100),
+//                        ),
+//                        onPressed: () {
+//                          //    presenter.changeColor(color);
+//                        },
+//                      ))
+//                  .toList(),
+//            ),
+            ,
           ]),
         )
       ],
@@ -70,11 +74,4 @@ const colors = [
   Colors.yellow,
 ];
 
-const themes = {
-  'business',
-  'entertainment',
-  'health',
-  'science',
-  'sports',
-  'technology'
-};
+const themes = {'business', 'entertainment', 'health', 'science', 'sports', 'technology'};

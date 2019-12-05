@@ -346,7 +346,7 @@ packages:
       name: osam
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.9"
+    version: "2.4.0"
   package_config:
     dependency: transitive
     description:
@@ -437,7 +437,7 @@ packages:
       name: share
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3+3"
+    version: "0.6.3+4"
   shelf:
     dependency: transitive
     description:

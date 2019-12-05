@@ -23,41 +23,47 @@ class NavigationAppBar extends StatelessWidget {
               Future.delayed(Duration.zero, () {
                 controller.animateTo(snapshot.data);
               });
-              return TabBar(
-                indicator: BoxDecoration(
-                  color: Colors.transparent,
-                ),
-                controller: controller,
-                tabs: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      presenter.routeTo(0);
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(CupertinoIcons.time),
-                    ),
+              return SafeArea(
+                top: false,
+                bottom: true,
+                left: false,
+                right: false,
+                child: TabBar(
+                  indicator: BoxDecoration(
+                    color: Colors.transparent,
                   ),
-                  GestureDetector(
+                  controller: controller,
+                  tabs: <Widget>[
+                    GestureDetector(
                       onTap: () {
-                        presenter.routeTo(1);
+                        presenter.routeTo(0);
                       },
                       child: Container(
                         color: Colors.transparent,
                         padding: const EdgeInsets.all(8.0),
-                        child: Icon(CupertinoIcons.book),
-                      )),
-                  GestureDetector(
-                      onTap: () {
-                        presenter.routeTo(2);
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(CupertinoIcons.settings),
-                      )),
-                ],
+                        child: Icon(CupertinoIcons.time),
+                      ),
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          presenter.routeTo(1);
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(CupertinoIcons.book),
+                        )),
+                    GestureDetector(
+                        onTap: () {
+                          presenter.routeTo(2);
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(CupertinoIcons.settings),
+                        )),
+                  ],
+                ),
               );
             }),
       ),

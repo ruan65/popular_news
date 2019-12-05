@@ -9,10 +9,8 @@ class SettingsState extends BaseState<SettingsState> {
   @HiveField(0)
   var themes = <String>{};
 
-  void changeThemes(Set<String> themes) {
-    this.themes.clear();
-    this.themes.addAll(themes);
-  }
+  void addTheme(String theme) => this.themes.add(theme);
+  void removeTheme(String theme) => this.themes.remove(theme);
 
   @override
   List<Object> get props => [themes];

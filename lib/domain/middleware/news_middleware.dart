@@ -29,7 +29,7 @@ class NewsMiddleware extends Middleware<Store<AppState>> {
       }
 
       ///creating tasks
-      final tasks = (event.bundle as Set<String>)
+      final tasks = store.state.settingsState.themes
           .map((theme) => Task<List<Article>>(function: DomainRepository.getTopArticles, bundle: theme))
           .toList();
       tasks.forEach((task) {

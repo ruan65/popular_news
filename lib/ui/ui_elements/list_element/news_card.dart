@@ -59,7 +59,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                             icon: Icon(snapshot.data ? CupertinoIcons.book_solid : CupertinoIcons.book,
                                 color: Colors.white),
                             onPressed: () async {
-                              if (snapshot.data) {
+                              if (snapshot.data && widget.listKey != null) {
                                 widget.listKey.currentState.removeItem(
                                     widget.index,
                                     (ctx, animation) => AbsorbPointer(
