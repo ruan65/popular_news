@@ -6,18 +6,11 @@ import 'package:clean_news_ai/ui/widgets/title_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:osam/osam.dart';
-import 'package:sliver_animated_list/sliver_animated_list.dart';
 
 import 'favorites_presenter.dart';
 
-class FavoritesScreen extends StatefulWidget {
+class FavoritesScreen extends StatelessWidget {
   FavoritesScreen(Key key) : super(key: key);
-
-  @override
-  _FavoritesScreenState createState() => _FavoritesScreenState();
-}
-
-class _FavoritesScreenState extends State<FavoritesScreen> {
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
 
   @override

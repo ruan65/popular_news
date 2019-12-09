@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:clean_news_ai/data/dto/article.dart';
 import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:clean_news_ai/ui/screens/top_news/top_news_presenter.dart';
@@ -45,25 +46,30 @@ class TopNewsScreen extends StatelessWidget {
                   .map((theme) => StreamBuilder(
                         initialData: presenter.initialData[theme],
                         stream: presenter.stream.map((news) => news[theme]),
-                        builder: (ctx, AsyncSnapshot<Map<String, Article>> snapshot) => snapshot.data.isNotEmpty
-                            ? SliverStickyHeader(
-                                header: NewsStickyHeader(title: theme),
-                                sliver: SliverList(
-                                  delegate: SliverChildListDelegate(snapshot.data.keys
-                                      .map((key) => PresenterProvider<Store<AppState>, NewsCardPresenter>(
-                                            key: ValueKey(key),
-                                            presenter: NewsCardPresenter(snapshot.data[key]),
-                                            child: NewsCard(),
-                                          ))
-                                      .toList()),
-                                ),
-                              )
-                            : SliverToBoxAdapter(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[NewsStickyHeader(title: theme), CupertinoActivityIndicator()],
-                                ),
-                              ),
+                        builder: (ctx, AsyncSnapshot<Map<String, Article>> snapshot) =>
+                            snapshot.data.isNotEmpty
+                                ? SliverStickyHeader(
+                                    header: NewsStickyHeader(title: theme),
+                                    sliver: SliverList(
+                                      delegate: SliverChildListDelegate(snapshot.data.keys
+                                          .map((key) =>
+                                              PresenterProvider<Store<AppState>, NewsCardPresenter>(
+                                                key: ValueKey(key),
+                                                presenter: NewsCardPresenter(snapshot.data[key]),
+                                                child: NewsCard(),
+                                              ))
+                                          .toList()),
+                                    ),
+                                  )
+                                : SliverToBoxAdapter(
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        NewsStickyHeader(title: theme),
+                                        CupertinoActivityIndicator()
+                                      ],
+                                    ),
+                                  ),
                       ))
                   .toList()
             ],

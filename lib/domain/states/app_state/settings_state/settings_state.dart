@@ -8,7 +8,7 @@ part 'settings_state.g.dart';
 class SettingsState extends BaseState<SettingsState> {
   @HiveField(0)
   var themes = <String>{};
-
+  
   void addTheme(String theme) => this.themes.add(theme);
   void removeTheme(String theme) => this.themes.remove(theme);
 

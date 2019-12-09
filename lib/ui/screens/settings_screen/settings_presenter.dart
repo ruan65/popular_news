@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:clean_news_ai/domain/event_enum.dart';
 import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:osam/domain/store/store.dart';
@@ -16,21 +17,26 @@ class SettingsPresenter extends Presenter<Store<AppState>> {
   @override
   void init() {
     _themesBroadcaster = StreamController<Set<String>>.broadcast();
-    selectedThemesSub = store.state.settingsState.propertyStream<Set<String>>((state) => state.themes).listen((data) {
+    selectedThemesSub = store.state.settingsState
+        .propertyStream<Set<String>>((state) => state.themes)
+        .listen((data) {
       _themesBroadcaster.sink.add(data);
     });
   }
 
   void changeThemesForTopNewsState() => store.dispatchEvent(
-      event: Event.modify(reducer: (state, _) => state.topNewsState..clearAndAddNewThemes(initialData)));
+      event: Event.modify(
+          reducer: (state, _) => state.topNewsState..clearAndAddNewThemes(initialData)));
 
   void addTheme(String theme) {
-    store.dispatchEvent(event: Event.modify(reducer: (state, _) => state.settingsState..addTheme(theme)));
+    store.dispatchEvent(
+        event: Event.modify(reducer: (state, _) => state.settingsState..addTheme(theme)));
     changeThemesForTopNewsState();
   }
 
   void removeTheme(String theme) {
-    store.dispatchEvent(event: Event.modify(reducer: (state, _) => state.settingsState..removeTheme(theme)));
+    store.dispatchEvent(
+        event: Event.modify(reducer: (state, _) => state.settingsState..removeTheme(theme)));
     changeThemesForTopNewsState();
   }
 
