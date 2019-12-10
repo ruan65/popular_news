@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:clean_news_ai/domain/event_enum.dart';
+import 'package:clean_news_ai/domain/events/events.dart';
 import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:osam/domain/store/store.dart';
 import 'package:osam/osam.dart';
@@ -8,9 +9,9 @@ import 'package:osam/presentation/presenter.dart';
 
 class SettingsPresenter extends Presenter<Store<AppState>> {
   StreamSubscription<Set<String>> selectedThemesSub;
+  StreamController<Set<String>> _themesBroadcaster;
 
   Stream<Set<String>> get themesStream => _themesBroadcaster.stream;
-  StreamController<Set<String>> _themesBroadcaster;
 
   Set<String> get initialData => store.state.settingsState.themes;
 
@@ -44,6 +45,6 @@ class SettingsPresenter extends Presenter<Store<AppState>> {
   void dispose() {
     selectedThemesSub.cancel();
     _themesBroadcaster.close();
-    store.dispatchEvent(event: Event.sideEffect(type: EventType.fetchNews));
+    store.dispatchEvent(event: FetchNewsEvent());
   }
 }

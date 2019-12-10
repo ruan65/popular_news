@@ -12,8 +12,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: 0.1.2
-  worker_manager: ^2.0.8
-  osam: ^2.4.0
+  worker_manager: ^2.1.1
+  osam: ^2.4.6
   flutter_sticky_header: ^0.4.0
   path_provider:
   hive:

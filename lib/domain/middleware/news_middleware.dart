@@ -1,4 +1,5 @@
 import 'package:clean_news_ai/data/dto/article.dart';
+import 'package:clean_news_ai/domain/events/events.dart';
 import 'package:clean_news_ai/domain/repository/domain_repository.dart';
 import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
 import 'package:osam/domain/middleware/middleware.dart';
@@ -19,7 +20,7 @@ class NewsMiddleware extends Middleware<Store<AppState>> {
           event: Event.modify(reducer: (state, _) => state.topNewsState..addNews(theme: theme, news: mapOfModels)));
     }
 
-    if (event.type == EventType.fetchNews) {
+    if (event is FetchNewsEvent) {
       /// killing old tasks
       if (refreshingTasks.isNotEmpty) {
         refreshingTasks.forEach((task) {
