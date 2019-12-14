@@ -1,17 +1,15 @@
 import 'package:clean_news_ai/data/dto/article.dart';
-import 'package:clean_news_ai/domain/events/events.dart';
+import 'package:clean_news_ai/domain/components/top_news/events/top_news_events.dart';
 import 'package:clean_news_ai/domain/repository/domain_repository.dart';
-import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
+import 'package:clean_news_ai/domain/components/app/state/app_state.dart';
 import 'package:osam/domain/middleware/middleware.dart';
 import 'package:osam/domain/store/store.dart';
 import 'package:osam/osam.dart';
 import 'package:worker_manager/executor.dart';
 import 'package:worker_manager/task.dart';
 
-import '../event_enum.dart';
-
 class NewsMiddleware extends Middleware<Store<AppState>> {
-  List<Task<List<Article>>> refreshingTasks = [];
+  List<Task<String, List<Article>>> refreshingTasks = [];
 
   bool getTopNews(Event event) {
     void _fetchEvents(String theme, List<Article> models) {
@@ -31,11 +29,11 @@ class NewsMiddleware extends Middleware<Store<AppState>> {
 
       ///creating tasks
       final tasks = store.state.settingsState.themes
-          .map((theme) => Task<List<Article>>(function: DomainRepository.getTopArticles, bundle: theme))
+          .map((theme) => Task(function: DomainRepository.getTopArticles, arg: theme))
           .toList();
       tasks.forEach((task) {
-        Executor().addTask<List<Article>>(task: task).listen((news) {
-          _fetchEvents(task.bundle, news);
+        Executor().addTask(task: task).listen((news) {
+          _fetchEvents(task.arg, news);
         });
       });
     }

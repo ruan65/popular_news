@@ -1,11 +1,10 @@
 
-import 'package:clean_news_ai/domain/states/app_state/settings_state/settings_state.dart';
-import 'package:clean_news_ai/domain/states/app_state/top_news_state/top_news_state.dart';
+import 'package:clean_news_ai/domain/components/favorites/state/favorites_state.dart';
+import 'package:clean_news_ai/domain/components/navigation/state/navigation_state.dart';
+import 'package:clean_news_ai/domain/components/settings/state/settings_state.dart';
+import 'package:clean_news_ai/domain/components/top_news/state/top_news_state.dart';
 import 'package:hive/hive.dart';
 import 'package:osam/domain/state/base_state.dart';
-
-import 'favorites_state/favorites_state.dart';
-import 'navigation_state/navigation_state.dart';
 
 part 'app_state.g.dart';
 

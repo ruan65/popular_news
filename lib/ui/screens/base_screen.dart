@@ -1,4 +1,5 @@
-import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
+import 'package:clean_news_ai/domain/components/app/state/app_state.dart';
+import 'package:clean_news_ai/ui/drawing/drawing_presenter.dart';
 import 'package:clean_news_ai/ui/drawing/gradient.dart';
 import 'package:clean_news_ai/ui/screens/settings_screen/settings_presenter.dart';
 import 'package:clean_news_ai/ui/screens/settings_screen/settings_screen.dart';
@@ -49,7 +50,11 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          NewsGradient(),
+          PresenterProvider<Store<AppState>, DrawingPresenter>(
+            child: NewsGradient(),
+            key: ValueKey('drawingProvider'),
+            presenter: DrawingPresenter(),
+          ),
           TabBarView(
             controller: _controller,
             children: <Widget>[

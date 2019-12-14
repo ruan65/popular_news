@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:clean_news_ai/data/dto/article.dart';
-import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
+import 'package:clean_news_ai/domain/components/app/state/app_state.dart';
 import 'package:osam/osam.dart';
 
 class NewsCardPresenter extends Presenter<Store<AppState>> {

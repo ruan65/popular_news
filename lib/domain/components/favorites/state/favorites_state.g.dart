@@ -15,14 +15,17 @@ class FavoritesStateAdapter extends TypeAdapter<FavoritesState> {
     };
     return FavoritesState()
       ..news = (fields[0] as Map)?.cast<String, Article>()
+      ..scrollPosition = fields[1] as double
       ..refreshHashcode();
   }
 
   @override
   void write(BinaryWriter writer, FavoritesState obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.news);
+      ..write(obj.news)
+      ..writeByte(1)
+      ..write(obj.scrollPosition);
   }
 }

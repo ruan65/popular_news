@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
+import 'package:clean_news_ai/domain/components/app/state/app_state.dart';
 import 'package:osam/domain/store/store.dart';
 import 'package:osam/osam.dart';
 import 'package:osam/presentation/presenter.dart';

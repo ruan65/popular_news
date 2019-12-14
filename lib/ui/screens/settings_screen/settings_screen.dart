@@ -22,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
             StreamBuilder(
               initialData: presenter.initialData,
               stream: presenter.themesStream,
-              builder: (ctx, AsyncSnapshot<Set<String>> snapshot) => Wrap(
+              builder: (ctx, AsyncSnapshot<List<String>> snapshot) => Wrap(
                 children: themes.map((theme) {
                   final isSelected = snapshot.data.contains(theme);
                   return ActionChip(
@@ -38,27 +38,25 @@ class SettingsScreen extends StatelessWidget {
                   );
                 }).toList(),
               ),
-            )
-
-//            Wrap(
-//              children: colors
-//                  .map((color) => ActionChip(
-//                        backgroundColor: color,
-//                        shadowColor: color,
-//                        label: Container(
-//                          width: 10,
-//                          color: color,
-//                        ),
-//                        shape: RoundedRectangleBorder(
-//                          borderRadius: BorderRadius.circular(100),
-//                        ),
-//                        onPressed: () {
-//                          //    presenter.changeColor(color);
-//                        },
-//                      ))
-//                  .toList(),
-//            ),
-            ,
+            ),
+            Wrap(
+              children: colors
+                  .map((color) => ActionChip(
+                        backgroundColor: color,
+                        shadowColor: color,
+                        label: Container(
+                          width: 10,
+                          color: color,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        onPressed: () {
+                          presenter.changeColor(color);
+                        },
+                      ))
+                  .toList(),
+            ),
           ]),
         )
       ],

@@ -13,12 +13,12 @@ class TopNewsState extends BaseState<TopNewsState> {
   @HiveField(1)
   var scrollPosition = 0.0;
 
+  void updateScrollPosition(double value) => scrollPosition = value;
+
   void addNews({String theme, Map<String, Article> news}) =>
       this.news[theme] = news;
 
-  void updateScrollPosition(double value) => scrollPosition = value;
-
-  void clearAndAddNewThemes(Set<String> themes) {
+  void clearAndAddNewThemes(List<String> themes) {
     this.news.clear();
     this.news.addAll(Map.fromIterable(themes,
         key: (item) => item, value: (item) => <String, Article>{}));

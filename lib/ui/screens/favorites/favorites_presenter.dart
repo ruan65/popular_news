@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:clean_news_ai/data/dto/article.dart';
-import 'package:clean_news_ai/domain/states/app_state/app_state.dart';
+import 'package:clean_news_ai/domain/components/app/state/app_state.dart';
 import 'package:osam/domain/store/store.dart';
+import 'package:osam/osam.dart';
 import 'package:osam/presentation/presenter.dart';
 
 class FavoritesPresenter<S extends Store<AppState>> extends Presenter<S> {
@@ -10,6 +11,7 @@ class FavoritesPresenter<S extends Store<AppState>> extends Presenter<S> {
   Stream<List<Article>> get stream => _broadcaster.stream;
   StreamController<List<Article>> _broadcaster;
   List<Article> get initialData => store.state.favoritesState.news.values.toList();
+  double get initialScrollPosition => store.state.topNewsState.scrollPosition;
 
   @override
   void init() {
@@ -20,6 +22,9 @@ class FavoritesPresenter<S extends Store<AppState>> extends Presenter<S> {
       _broadcaster.sink.add(data);
     });
   }
+
+  void updateScrollPosition(double value) => store.dispatchEvent(
+      event: Event.modify(reducer: (state, _) => state.topNewsState..updateScrollPosition(value)));
 
   @override
   void dispose() {
