@@ -37,6 +37,7 @@ void main() async {
   store.dispatchEvent(event: FetchNewsEvent());
   final initialIndex = store.state.navigationState.navigationIndex;
   runApp(MaterialApp(
+    showPerformanceOverlay: true,
       home: StoreProvider(
           key: ValueKey('Store'),
           store: store,

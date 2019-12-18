@@ -15,13 +15,13 @@ dependencies:
   worker_manager: ^2.1.4
   osam: ^2.5.0
   flutter_sticky_header: ^0.4.0
-  path_provider:
-  hive:
-  hive_flutter:
-  http:
-  intl:
-  share:
-  uuid:
+  path_provider: ^1.5.1
+  hive: ^1.1.1
+  hive_flutter: ^0.2.1
+  http: ^0.12.0+2
+  intl: ^0.16.0
+  share: ^0.6.3+5
+  uuid: ^2.0.4
 
 dev_dependencies:
   hive_generator:

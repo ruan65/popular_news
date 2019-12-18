@@ -29,8 +29,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
     final article = presenter.article;
     return GestureDetector(
       onTap: () {
-        Navigator.of(context)
-            .push(CupertinoPageRoute(builder: (ctx) => Container())..createAnimationController());
+
       },
       child: Container(
         decoration: BoxDecoration(border: Border.all(color: Colors.white10)),

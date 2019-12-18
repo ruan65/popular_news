@@ -19,17 +19,22 @@ class TopNewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final presenter = PresenterProvider.of<TopNewsPresenter>(context);
+    if (!scrollController.hasListeners) {
+      scrollController.addListener(() {
+        presenter.updateScrollPosition(scrollController.offset);
+      });
+    }
     return StreamBuilder(
         initialData: presenter.initialScrollPosition,
         builder: (context, AsyncSnapshot<double> snapshot) {
           Future.delayed(Duration.zero, () {
-            scrollController.jumpTo(snapshot.data);
+            // ignore: invalid_use_of_protected_member
+            if (scrollController.positions.isNotEmpty) {
+              scrollController.jumpTo(snapshot.data);
+            }
           });
           return CustomScrollView(
-            controller: scrollController
-              ..addListener(() {
-                presenter.updateScrollPosition(scrollController.offset);
-              }),
+            controller: scrollController,
             physics: BouncingScrollPhysics(),
             slivers: <Widget>[
               TitleAppBar(title: 'News'),
@@ -46,30 +51,25 @@ class TopNewsScreen extends StatelessWidget {
                   .map((theme) => StreamBuilder(
                         initialData: presenter.initialData[theme],
                         stream: presenter.stream.map((news) => news[theme]),
-                        builder: (ctx, AsyncSnapshot<Map<String, Article>> snapshot) =>
-                            snapshot.data.isNotEmpty
-                                ? SliverStickyHeader(
-                                    header: NewsStickyHeader(title: theme),
-                                    sliver: SliverList(
-                                      delegate: SliverChildListDelegate(snapshot.data.keys
-                                          .map((key) =>
-                                              PresenterProvider(
-                                                key: ValueKey(key),
-                                                presenter: NewsCardPresenter(snapshot.data[key]),
-                                                child: NewsCard(),
-                                              ))
-                                          .toList()),
-                                    ),
-                                  )
-                                : SliverToBoxAdapter(
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        NewsStickyHeader(title: theme),
-                                        CupertinoActivityIndicator()
-                                      ],
-                                    ),
-                                  ),
+                        builder: (ctx, AsyncSnapshot<Map<String, Article>> snapshot) => snapshot.data.isNotEmpty
+                            ? SliverStickyHeader(
+                                header: NewsStickyHeader(title: theme),
+                                sliver: SliverList(
+                                  delegate: SliverChildListDelegate(snapshot.data.keys
+                                      .map((key) => PresenterProvider(
+                                            key: ValueKey(key),
+                                            presenter: NewsCardPresenter(snapshot.data[key]),
+                                            child: NewsCard(),
+                                          ))
+                                      .toList()),
+                                ),
+                              )
+                            : SliverToBoxAdapter(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[NewsStickyHeader(title: theme), CupertinoActivityIndicator()],
+                                ),
+                              ),
                       ))
                   .toList()
             ],
