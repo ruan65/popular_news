@@ -346,7 +346,7 @@ packages:
       name: osam
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.4.8"
+    version: "2.5.0"
   package_config:
     dependency: transitive
     description:
@@ -568,7 +568,7 @@ packages:
       name: worker_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.3"
+    version: "2.1.4"
   xml:
     dependency: transitive
     description:

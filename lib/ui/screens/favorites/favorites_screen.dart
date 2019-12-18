@@ -48,7 +48,7 @@ class FavoritesScreen extends StatelessWidget {
                   key: _listKey,
                   initialItemCount: snapshot.data.length,
                   itemBuilder: (ctx, index, animation) {
-                    return PresenterProvider<Store<AppState>, NewsCardPresenter>(
+                    return PresenterProvider(
                       key: ValueKey(snapshot.data[index]),
                       presenter: NewsCardPresenter(snapshot.data[index]),
                       child: NewsCard(listKey: _listKey, index: index),

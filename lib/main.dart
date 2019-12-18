@@ -40,7 +40,7 @@ void main() async {
       home: StoreProvider(
           key: ValueKey('Store'),
           store: store,
-          child: PresenterProvider<Store<AppState>, NavigationPresenter>(
+          child: PresenterProvider<NavigationPresenter>(
               key: ValueKey('navigation'),
               presenter: NavigationPresenter(),
               child: BaseScreen(

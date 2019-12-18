@@ -50,7 +50,7 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          PresenterProvider<Store<AppState>, DrawingPresenter>(
+          PresenterProvider(
             child: NewsGradient(),
             key: ValueKey('drawingProvider'),
             presenter: DrawingPresenter(),
@@ -58,17 +58,17 @@ class _BaseScreenState extends State<BaseScreen> with TickerProviderStateMixin {
           TabBarView(
             controller: _controller,
             children: <Widget>[
-              PresenterProvider<Store<AppState>, TopNewsPresenter>(
+              PresenterProvider(
                 key: ValueKey('topNewsPresenter'),
                 child: TopNewsScreen(PageStorageKey('news')),
                 presenter: TopNewsPresenter(),
               ),
-              PresenterProvider<Store<AppState>, FavoritesPresenter>(
+              PresenterProvider(
                 key: ValueKey('favoritesPresenter'),
                 child: FavoritesScreen(PageStorageKey('favorites')),
                 presenter: FavoritesPresenter(),
               ),
-              PresenterProvider<Store<AppState>, SettingsPresenter>(
+              PresenterProvider(
                 key: ValueKey('settingsPresenter'),
                 child: SettingsScreen(PageStorageKey('settings')),
                 presenter: SettingsPresenter(),

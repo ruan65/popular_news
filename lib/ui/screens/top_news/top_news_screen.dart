@@ -53,7 +53,7 @@ class TopNewsScreen extends StatelessWidget {
                                     sliver: SliverList(
                                       delegate: SliverChildListDelegate(snapshot.data.keys
                                           .map((key) =>
-                                              PresenterProvider<Store<AppState>, NewsCardPresenter>(
+                                              PresenterProvider(
                                                 key: ValueKey(key),
                                                 presenter: NewsCardPresenter(snapshot.data[key]),
                                                 child: NewsCard(),

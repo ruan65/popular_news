@@ -70,8 +70,7 @@ class _NewsCardState extends State<NewsCard> with TickerProviderStateMixin {
                                             opacity: animation,
                                             child: SizeTransition(
                                               sizeFactor: animation,
-                                              child: PresenterProvider<Store<AppState>,
-                                                  NewsCardPresenter>(
+                                              child: PresenterProvider(
                                                 key: ValueKey(this.widget.key),
                                                 presenter: NewsCardPresenter(presenter.article),
                                                 child: NewsCard(),
