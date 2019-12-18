@@ -14,67 +14,55 @@ import 'package:osam/osam.dart';
 
 class TopNewsScreen extends StatelessWidget {
   TopNewsScreen(key) : super(key: key);
-  final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     final presenter = PresenterProvider.of<TopNewsPresenter>(context);
-    if (!scrollController.hasListeners) {
-      scrollController.addListener(() {
-        presenter.updateScrollPosition(scrollController.offset);
-      });
-    }
-    return StreamBuilder(
-        initialData: presenter.initialScrollPosition,
-        builder: (context, AsyncSnapshot<double> snapshot) {
-          Future.delayed(Duration.zero, () {
-            // ignore: invalid_use_of_protected_member
-            if (scrollController.positions.isNotEmpty) {
-              scrollController.jumpTo(snapshot.data);
-            }
-          });
-          return CustomScrollView(
-            controller: scrollController,
-            physics: BouncingScrollPhysics(),
-            slivers: <Widget>[
-              TitleAppBar(title: 'News'),
-              CupertinoSliverRefreshControl(
-                builder: buildSimpleRefreshIndicator,
-                onRefresh: () {
-                  return Future.delayed(const Duration(seconds: 2), () {});
-                },
-              ),
-              SliverPadding(
-                padding: EdgeInsets.only(top: 20),
-              ),
-              ...presenter.initialData.keys
-                  .map((theme) => StreamBuilder(
-                        initialData: presenter.initialData[theme],
-                        stream: presenter.stream.map((news) => news[theme]),
-                        builder: (ctx, AsyncSnapshot<Map<String, Article>> snapshot) => snapshot.data.isNotEmpty
-                            ? SliverStickyHeader(
-                                header: NewsStickyHeader(title: theme),
-                                sliver: SliverList(
-                                  delegate: SliverChildListDelegate(snapshot.data.keys
-                                      .map((key) => PresenterProvider(
-                                            key: ValueKey(key),
-                                            presenter: NewsCardPresenter(snapshot.data[key]),
-                                            child: NewsCard(),
-                                          ))
-                                      .toList()),
-                                ),
-                              )
-                            : SliverToBoxAdapter(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[NewsStickyHeader(title: theme), CupertinoActivityIndicator()],
-                                ),
-                              ),
-                      ))
-                  .toList()
-            ],
-          );
-        });
+    final scrollController = ScrollController(initialScrollOffset: presenter.initialScrollPosition);
+    scrollController.addListener(() {
+      presenter.updateScrollPosition(scrollController.offset);
+    });
+    return CustomScrollView(
+      controller: scrollController,
+      physics: BouncingScrollPhysics(),
+      slivers: <Widget>[
+        TitleAppBar(title: 'News'),
+        CupertinoSliverRefreshControl(
+          builder: buildSimpleRefreshIndicator,
+          onRefresh: () {
+            return Future.delayed(const Duration(seconds: 2), () {});
+          },
+        ),
+        SliverPadding(
+          padding: EdgeInsets.only(top: 20),
+        ),
+        ...presenter.initialData.keys
+            .map((theme) => StreamBuilder(
+                  initialData: presenter.initialData[theme],
+                  stream: presenter.stream.map((news) => news[theme]),
+                  builder: (ctx, AsyncSnapshot<Map<String, Article>> snapshot) => snapshot.data.isNotEmpty
+                      ? SliverStickyHeader(
+                          header: NewsStickyHeader(title: theme),
+                          sliver: SliverList(
+                            delegate: SliverChildListDelegate(snapshot.data.keys
+                                .map((key) => PresenterProvider(
+                                      key: ValueKey(key),
+                                      presenter: NewsCardPresenter(snapshot.data[key]),
+                                      child: NewsCard(),
+                                    ))
+                                .toList()),
+                          ),
+                        )
+                      : SliverToBoxAdapter(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[NewsStickyHeader(title: theme), CupertinoActivityIndicator()],
+                          ),
+                        ),
+                ))
+            .toList()
+      ],
+    );
   }
 }
 

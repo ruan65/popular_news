@@ -1,6 +1,4 @@
 import 'dart:core';
-
-import 'package:clean_news_ai/domain/components/app/state/app_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:osam/osam.dart';
