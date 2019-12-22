@@ -1,31 +1,31 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'source.dart';
+part of 'settings_state.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class SourceAdapter extends TypeAdapter<Source> {
+class SettingsStateAdapter extends TypeAdapter<SettingsState> {
   @override
-  Source read(BinaryReader reader) {
+  SettingsState read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Source(
-      id: fields[0] as String,
-      name: fields[1] as String,
-    )..refreshHashcode();
+    return SettingsState()
+      ..themes = (fields[0] as List)?.cast<String>()
+      ..color = fields[1] as MaterialColor
+      ..refreshHashcode();
   }
 
   @override
-  void write(BinaryWriter writer, Source obj) {
+  void write(BinaryWriter writer, SettingsState obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.id)
+      ..write(obj.themes)
       ..writeByte(1)
-      ..write(obj.name);
+      ..write(obj.color);
   }
 }

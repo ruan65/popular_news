@@ -22,7 +22,7 @@ class ArticleAdapter extends TypeAdapter<Article> {
       urlToImage: fields[5] as String,
       publishedAt: fields[6] as String,
       content: fields[7] as String,
-    );
+    )..refreshHashcode();
   }
 
   @override
